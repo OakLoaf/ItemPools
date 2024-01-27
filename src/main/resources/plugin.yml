@@ -1,0 +1,4 @@
+name: ItemPools
+version: '${version}'
+main: me.dave.itempools.ItemPools
+api-version: '1.20'
