@@ -1,0 +1,12 @@
+regions:
+  spawn:
+    materials:
+      dirt:
+        goal: 64
+        current: 0
+      iron_ingot:
+        goal: 32
+        current: 10
+      carrot:
+        goal: 128
+        current: 14
