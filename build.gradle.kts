@@ -9,15 +9,14 @@ version = "1.0"
 
 repositories {
     mavenCentral()
-    mavenLocal()
-    maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
-    maven { url = uri("https://jitpack.io") } // ChatColorHandler
+    maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") } // Spigot
+    maven { url = uri("https://repo.smrt-1.com/releases/") } // ChatColorHandler, PlatyUtils
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot:1.20.1-R0.1-SNAPSHOT")
-    implementation("com.github.CoolDCB:ChatColorHandler:v2.5.0")
-    implementation(files("libs/PlatyUtils-0.1.0.30.jar"))
+    implementation("me.dave:ChatColorHandler:v2.5.3")
+    implementation("me.dave:PlatyUtils:0.1.0.32")
 }
 
 java {
