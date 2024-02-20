@@ -1,5 +1,8 @@
 regions:
   region1:
+    world: world
+    pos1: 12,100,23
+    pos2: 64,23,100
     items:
       dirt:
         goal: 64
