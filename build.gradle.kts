@@ -12,12 +12,13 @@ repositories {
     mavenLocal()
     maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") } // Spigot
     maven { url = uri("https://mvn-repo.arim.space/lesser-gpl3/") } // MorePaperLib
-    maven { url = uri("https://repo.smrt-1.com/releases/") } // ChatColorHandler, PlatyUtils
+    maven { url = uri("https://repo.smrt-1.com/releases/") } // PlatyUtils
+    maven { url = uri("https://repo.smrt-1.com/snapshots/") } // PlatyUtils
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot:1.20.1-R0.1-SNAPSHOT")
-    implementation("me.dave:PlatyUtils:0.1.0.43")
+    implementation("me.dave:PlatyUtils:0.1.0.54")
 }
 
 java {
@@ -30,7 +31,6 @@ tasks {
     }
 
     shadowJar {
-        relocate("me.dave.chatcolorhandler", "me.dave.itempools.libraries.chatcolor")
 //        relocate("me.dave.platyutils", "me.dave.itempools.libraries.platyutils")
 
         minimize()
