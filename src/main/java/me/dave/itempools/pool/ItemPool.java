@@ -3,17 +3,29 @@ package me.dave.itempools.pool;
 import me.dave.itempools.goal.Goal;
 import me.dave.itempools.goal.GoalCollection;
 import me.dave.itempools.goal.GoalItem;
+import me.dave.itempools.region.Region;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemPool {
-    public GoalCollection goals;
+    private final Region region;
+    private final GoalCollection goals;
 
-    public ItemPool() {
+    public ItemPool(Region region) {
+        this.region = region;
         this.goals = new GoalCollection();
     }
 
-    public ItemPool(GoalCollection goals) {
+    public ItemPool(Region region, GoalCollection goals) {
+        this.region = region;
         this.goals = goals;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public GoalCollection getGoalCollection() {
+        return goals;
     }
 
     public int getValue(GoalItem goalItem) {

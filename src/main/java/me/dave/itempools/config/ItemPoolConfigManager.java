@@ -16,18 +16,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class ItemPoolConfigManager extends Manager {
-    /**
-     * Region name to Region
-     */
-    private ConcurrentHashMap<String, Region> regions;
 
     @Override
     public void onEnable() {
         FileConfiguration regionsConfig = ItemPools.getInstance().getConfigResource("item-pools.yml");
-        regions = new ConcurrentHashMap<>();
 
         ConfigurationSection regionsSection = regionsConfig.getConfigurationSection("regions");
         if (regionsSection != null) {
@@ -56,8 +50,6 @@ public class ItemPoolConfigManager extends Manager {
                     new Location(world, Double.parseDouble(pos1CoordsRaw[0]), Double.parseDouble(pos1CoordsRaw[1]), Double.parseDouble(pos1CoordsRaw[2])),
                     new Location(world, Double.parseDouble(pos2CoordsRaw[0]), Double.parseDouble(pos2CoordsRaw[1]), Double.parseDouble(pos2CoordsRaw[2]))
                 );
-
-                regions.put(regionName, region);
 
                 GoalCollection goals = new GoalCollection();
                 ConfigurationSection providersSection = regionSection.getConfigurationSection("goal-providers");
@@ -88,16 +80,8 @@ public class ItemPoolConfigManager extends Manager {
                     });
                 }
 
-                PlatyUtils.getManager(ItemPoolManager.class).ifPresent(manager -> manager.addItemPool(regionName, new ItemPool(goals)));
+                PlatyUtils.getManager(ItemPoolManager.class).ifPresent(manager -> manager.addItemPool(regionName, new ItemPool(region, goals)));
             });
-        }
-    }
-
-    @Override
-    public void onDisable() {
-        if (regions != null) {
-            regions.clear();
-            regions = null;
         }
     }
 

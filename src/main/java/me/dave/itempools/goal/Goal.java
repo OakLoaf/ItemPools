@@ -46,4 +46,8 @@ public class Goal {
     public void increaseValue(int value) {
         this.value += value;
     }
+
+    public int getAmountRemaining() {
+        return Math.max(goal - value, 0);
+    }
 }

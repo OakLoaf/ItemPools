@@ -1,8 +1,14 @@
 package me.dave.itempools.region;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.util.BoundingBox;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Predicate;
 
 public class Region {
     private final String name;
@@ -63,5 +69,18 @@ public class Region {
         }
 
         return BoundingBox.of(pos1, pos2).contains(location.toVector());
+    }
+
+    public Collection<Entity> getEntities() {
+        return getEntities(null);
+    }
+
+    public Collection<Entity> getEntities(Predicate<Entity> filter) {
+        World world = Bukkit.getWorld(worldName);
+        if (world == null) {
+            return Collections.emptyList();
+        }
+
+        return world.getNearbyEntities(BoundingBox.of(pos1, pos2), filter);
     }
 }
