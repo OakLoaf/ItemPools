@@ -14,7 +14,7 @@ public class ItemPool {
     }
 
     public int getValue(Material material) {
-        return goals.contains(material) ? goals.getGoal(material).getCurrentValue() : 0;
+        return goals.contains(material) ? goals.getGoal(material).getValue() : 0;
     }
 
     public void setValue(Material material, int value) {

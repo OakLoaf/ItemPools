@@ -1,50 +1,38 @@
 package me.dave.itempools.pool;
 
-import me.dave.itempools.util.SimpleItemMeta;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import me.dave.itempools.util.GoalItem;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class Goal {
-    private final Material material;
-    private final SimpleItemMeta itemMeta;
-    private final int goal;
+    private final GoalItem goalItem;
+    private int goal;
     private int value;
 
-    public Goal(@NotNull Material material, @Nullable SimpleItemMeta itemMeta, int goal) {
-        this.material = material;
-        this.itemMeta = itemMeta;
+    public Goal(@NotNull GoalItem goalItem, int goal) {
+        this.goalItem = goalItem;
         this.goal = goal;
         this.value = 0;
     }
 
-    public Goal(@NotNull Material material, @Nullable SimpleItemMeta itemMeta, int goal, int value) {
-        this.material = material;
-        this.itemMeta = itemMeta;
+    public Goal(@NotNull GoalItem goalItem, int goal, int value) {
+        this.goalItem = goalItem;
         this.goal = goal;
         this.value = value;
     }
 
-    public Material getMaterial() {
-        return material;
-    }
-
-    public boolean isValid(ItemStack item) {
-        if (item.getType().equals(material)) {
-            ItemMeta itemMeta = item.getItemMeta();
-            return this.itemMeta == null || itemMeta != null && this.itemMeta.isSimilar(itemMeta);
-        }
-
-        return false;
+    public GoalItem getGoalItem() {
+        return goalItem;
     }
 
     public int getGoal() {
         return goal;
     }
 
-    public int getCurrentValue() {
+    public void setGoal(int goal) {
+        this.goal = goal;
+    }
+
+    public int getValue() {
         return value;
     }
 

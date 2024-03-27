@@ -1,0 +1,24 @@
+providers:
+  example-crops:
+    potato:
+      weight: 1
+      goal: 64
+    beetroot:
+      weight: 1
+      goal: 64
+    carrot:
+      weight: 1
+      goal: 64
+  example-gems:
+    diamond:
+      weight: 1
+      goal: 20
+    emerald:
+      weight: 1
+      goal: 15
+    gold_ingot:
+      weight: 1
+      goal: 64
+    redstone:
+      weight: 1
+      goal: 128

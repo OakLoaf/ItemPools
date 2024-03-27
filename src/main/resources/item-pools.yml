@@ -1,5 +1,5 @@
 regions:
-  region1:
+  example-region:
     world: world
     pos1: 12,100,23
     pos2: 64,23,100
@@ -15,3 +15,10 @@ regions:
       carrot:
         goal: 128
         current: 14
+  example-provider-region:
+    world: world
+    pos1: 15,46,15
+    pos2: 18,47,18
+    goal-providers:
+      example-crops: 2
+      example-gems: 1

@@ -1,15 +1,18 @@
 package me.dave.itempools.pool;
 
-import me.dave.itempools.util.SimpleItemMeta;
-import org.bukkit.Material;
+import me.dave.itempools.util.GoalItem;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class WeightedGoal extends Goal {
     private final double weight;
 
-    public WeightedGoal(@NotNull Material material, @Nullable SimpleItemMeta itemMeta, int goal, double weight) {
-        super(material, itemMeta, goal);
+    public WeightedGoal(@NotNull GoalItem goalItem, int goal, double weight) {
+        super(goalItem, goal);
+        this.weight = weight;
+    }
+
+    public WeightedGoal(@NotNull GoalItem goalItem, int goal, int value, double weight) {
+        super(goalItem, goal, value);
         this.weight = weight;
     }
 

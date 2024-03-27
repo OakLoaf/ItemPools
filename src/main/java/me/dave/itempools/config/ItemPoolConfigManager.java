@@ -1,12 +1,9 @@
 package me.dave.itempools.config;
 
 import me.dave.itempools.ItemPools;
-import me.dave.itempools.pool.Goal;
-import me.dave.itempools.pool.GoalCollection;
-import me.dave.itempools.pool.ItemPool;
-import me.dave.itempools.pool.ItemPoolManager;
+import me.dave.itempools.pool.*;
 import me.dave.itempools.region.Region;
-import me.dave.itempools.util.SimpleItemMeta;
+import me.dave.itempools.util.GoalItem;
 import me.dave.platyutils.PlatyUtils;
 import me.dave.platyutils.manager.Manager;
 import me.dave.platyutils.utils.StringUtils;
@@ -29,6 +26,7 @@ public class ItemPoolConfigManager extends Manager {
     @Override
     public void onEnable() {
         FileConfiguration regionsConfig = ItemPools.getInstance().getConfigResource("item-pools.yml");
+        regions = new ConcurrentHashMap<>();
 
         ConfigurationSection regionsSection = regionsConfig.getConfigurationSection("regions");
         if (regionsSection != null) {
@@ -61,20 +59,31 @@ public class ItemPoolConfigManager extends Manager {
                 regions.put(regionName, region);
 
                 GoalCollection goals = new GoalCollection();
-                ConfigurationSection itemsSection = regionsSection.getConfigurationSection("items");
+                ConfigurationSection providersSection = regionSection.getConfigurationSection("goal-providers");
+                if (providersSection != null) {
+                    providersSection.getKeys(false).forEach(providerName -> PlatyUtils.getManager(GoalProviderConfigManager.class).ifPresent(providerManager -> {
+                        RandomGoalCollection provider = providerManager.getProvider(providerName);
+                        if (provider != null) {
+                            goals.addAll(provider.nextGoals(providersSection.getInt(providerName)));
+                        } else {
+                            ItemPools.getInstance().getLogger().severe("Provider '" + providerName + "' at '" + providersSection.getCurrentPath() + "' is not a valid provider");
+                        }
+                    }));
+                }
+
+
+                ConfigurationSection itemsSection = regionSection.getConfigurationSection("items");
                 if (itemsSection != null) {
                     getConfigurationSections(itemsSection).forEach(dataSection -> {
-                        Material material = StringUtils.getEnum(dataSection.getName(), Material.class).orElse(null);
-                        if (material == null) {
+                        GoalItem goalItem = GoalItem.create(dataSection);
+                        if (goalItem == null) {
                             return;
                         }
 
-                        ConfigurationSection metaSection = dataSection.getConfigurationSection("meta");
-                        SimpleItemMeta itemMeta = metaSection != null ? SimpleItemMeta.create(metaSection) : null;
                         int goal = dataSection.getInt("goal");
                         int value = dataSection.getInt("current");
 
-                        goals.add(new Goal(material, itemMeta, goal, value));
+                        goals.add(new Goal(goalItem, goal, value));
                     });
                 }
 

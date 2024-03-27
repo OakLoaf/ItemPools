@@ -1,6 +1,7 @@
 package me.dave.itempools;
 
 import me.dave.itempools.command.ItemPoolsCommand;
+import me.dave.itempools.config.GoalProviderConfigManager;
 import me.dave.itempools.config.ItemPoolConfigManager;
 import me.dave.itempools.pool.ItemPoolManager;
 import me.dave.platyutils.PlatyUtils;
@@ -18,6 +19,7 @@ public final class ItemPools extends SpigotPlugin {
     @Override
     public void onEnable() {
         PlatyUtils.registerManager(
+            new GoalProviderConfigManager(),
             new ItemPoolManager(),
             new ItemPoolConfigManager()
         );

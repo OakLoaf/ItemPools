@@ -1,19 +1,25 @@
 package me.dave.itempools.pool;
 
+import me.dave.itempools.util.GoalItem;
 import me.dave.platyutils.utils.RandomCollection;
-import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class RandomGoalCollection extends GoalCollection {
-    private final RandomCollection<Material> randomCollection;
+    private final RandomCollection<GoalItem> randomCollection;
 
-    public RandomGoalCollection(ConcurrentHashMap<Material, WeightedGoal> goals) {
+    public RandomGoalCollection() {
         randomCollection = new RandomCollection<>();
-        goals.values().forEach(weightedGoal -> randomCollection.add(weightedGoal.getMaterial(), weightedGoal.getWeight()));
+    }
+
+    @Override
+    public void add(Goal goal) {
+        super.add(goal);
+        if (goal instanceof WeightedGoal weightedGoal) {
+            randomCollection.add(weightedGoal.getGoalItem(), weightedGoal.getWeight());
+        }
     }
 
     @NotNull
