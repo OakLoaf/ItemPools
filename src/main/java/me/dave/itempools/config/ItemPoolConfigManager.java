@@ -1,15 +1,16 @@
 package me.dave.itempools.config;
 
 import me.dave.itempools.ItemPools;
+import me.dave.itempools.goal.Goal;
+import me.dave.itempools.goal.GoalCollection;
+import me.dave.itempools.goal.RandomGoalCollection;
 import me.dave.itempools.pool.*;
 import me.dave.itempools.region.Region;
-import me.dave.itempools.util.GoalItem;
+import me.dave.itempools.goal.GoalItem;
 import me.dave.platyutils.PlatyUtils;
 import me.dave.platyutils.manager.Manager;
-import me.dave.platyutils.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;

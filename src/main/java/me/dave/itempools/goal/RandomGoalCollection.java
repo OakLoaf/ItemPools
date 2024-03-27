@@ -1,6 +1,5 @@
-package me.dave.itempools.pool;
+package me.dave.itempools.goal;
 
-import me.dave.itempools.util.GoalItem;
 import me.dave.platyutils.utils.RandomCollection;
 import org.jetbrains.annotations.NotNull;
 

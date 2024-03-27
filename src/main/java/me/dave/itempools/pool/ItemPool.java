@@ -1,6 +1,8 @@
 package me.dave.itempools.pool;
 
-import me.dave.itempools.util.GoalItem;
+import me.dave.itempools.goal.Goal;
+import me.dave.itempools.goal.GoalCollection;
+import me.dave.itempools.goal.GoalItem;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemPool {

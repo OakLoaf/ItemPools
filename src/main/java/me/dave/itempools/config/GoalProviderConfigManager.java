@@ -1,8 +1,9 @@
 package me.dave.itempools.config;
 
 import me.dave.itempools.ItemPools;
-import me.dave.itempools.pool.*;
-import me.dave.itempools.util.GoalItem;
+import me.dave.itempools.goal.RandomGoalCollection;
+import me.dave.itempools.goal.WeightedGoal;
+import me.dave.itempools.goal.GoalItem;
 import me.dave.platyutils.manager.Manager;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;

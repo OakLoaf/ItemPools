@@ -1,4 +1,4 @@
-package me.dave.itempools.util;
+package me.dave.itempools.goal;
 
 import me.dave.platyutils.utils.StringUtils;
 import org.bukkit.Material;

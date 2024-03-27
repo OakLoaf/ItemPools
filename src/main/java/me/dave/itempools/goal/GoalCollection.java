@@ -1,6 +1,5 @@
-package me.dave.itempools.pool;
+package me.dave.itempools.goal;
 
-import me.dave.itempools.util.GoalItem;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
