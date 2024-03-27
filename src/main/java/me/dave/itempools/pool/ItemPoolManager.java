@@ -3,8 +3,7 @@ package me.dave.itempools.pool;
 import me.dave.itempools.ItemPools;
 import me.dave.itempools.config.ItemPoolConfigManager;
 import me.dave.itempools.goal.Goal;
-import me.dave.platyutils.PlatyUtils;
-import me.dave.platyutils.manager.Manager;
+import me.dave.lushlib.manager.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -25,7 +24,7 @@ public class ItemPoolManager extends Manager {
     @Override
     public void onEnable() {
         itemPools = new ConcurrentHashMap<>();
-        poolHeartbeat = Bukkit.getScheduler().runTaskTimer(ItemPools.getInstance(), () -> PlatyUtils.getManager(ItemPoolConfigManager.class).ifPresent(itemPoolManager -> {
+        poolHeartbeat = Bukkit.getScheduler().runTaskTimer(ItemPools.getInstance(), () -> ItemPools.getInstance().getManager(ItemPoolConfigManager.class).ifPresent(itemPoolManager -> {
             itemPools.values().forEach(itemPool -> {
                 Collection<Entity> entities = itemPool.getRegion().getEntities(entity -> entity.getType().equals(EntityType.DROPPED_ITEM));
                 entities.forEach(entity -> {

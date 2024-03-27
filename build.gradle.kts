@@ -12,13 +12,13 @@ repositories {
     mavenLocal()
     maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") } // Spigot
     maven { url = uri("https://mvn-repo.arim.space/lesser-gpl3/") } // MorePaperLib
-    maven { url = uri("https://repo.smrt-1.com/releases/") } // PlatyUtils
-    maven { url = uri("https://repo.smrt-1.com/snapshots/") } // PlatyUtils
+    maven { url = uri("https://repo.smrt-1.com/releases/") } // LushLib
+    maven { url = uri("https://repo.smrt-1.com/snapshots/") } // LushLib
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot:1.20.1-R0.1-SNAPSHOT")
-    implementation("me.dave:PlatyUtils:0.1.0.54")
+    implementation("me.dave:LushLib:0.1.1")
 }
 
 java {
@@ -31,7 +31,7 @@ tasks {
     }
 
     shadowJar {
-//        relocate("me.dave.platyutils", "me.dave.itempools.libraries.platyutils")
+        relocate("me.dave.lushlib", "me.dave.itempools.libraries.lushlib")
 
         minimize()
 

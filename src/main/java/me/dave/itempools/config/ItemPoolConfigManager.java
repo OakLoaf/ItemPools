@@ -7,8 +7,7 @@ import me.dave.itempools.goal.RandomGoalCollection;
 import me.dave.itempools.pool.*;
 import me.dave.itempools.region.Region;
 import me.dave.itempools.goal.GoalItem;
-import me.dave.platyutils.PlatyUtils;
-import me.dave.platyutils.manager.Manager;
+import me.dave.lushlib.manager.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -54,7 +53,7 @@ public class ItemPoolConfigManager extends Manager {
                 GoalCollection goals = new GoalCollection();
                 ConfigurationSection providersSection = regionSection.getConfigurationSection("goal-providers");
                 if (providersSection != null) {
-                    providersSection.getKeys(false).forEach(providerName -> PlatyUtils.getManager(GoalProviderConfigManager.class).ifPresent(providerManager -> {
+                    providersSection.getKeys(false).forEach(providerName -> ItemPools.getInstance().getManager(GoalProviderConfigManager.class).ifPresent(providerManager -> {
                         RandomGoalCollection provider = providerManager.getProvider(providerName);
                         if (provider != null) {
                             goals.addAll(provider.nextGoals(providersSection.getInt(providerName)));
@@ -80,7 +79,7 @@ public class ItemPoolConfigManager extends Manager {
                     });
                 }
 
-                PlatyUtils.getManager(ItemPoolManager.class).ifPresent(manager -> manager.addItemPool(regionName, new ItemPool(region, goals)));
+                ItemPools.getInstance().getManager(ItemPoolManager.class).ifPresent(manager -> manager.addItemPool(regionName, new ItemPool(region, goals)));
             });
         }
     }

@@ -1,6 +1,6 @@
 package me.dave.itempools.goal;
 
-import me.dave.platyutils.utils.RandomCollection;
+import me.dave.lushlib.utils.RandomCollection;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

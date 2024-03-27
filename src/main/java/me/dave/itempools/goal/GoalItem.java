@@ -1,6 +1,6 @@
 package me.dave.itempools.goal;
 
-import me.dave.platyutils.utils.StringUtils;
+import me.dave.lushlib.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;

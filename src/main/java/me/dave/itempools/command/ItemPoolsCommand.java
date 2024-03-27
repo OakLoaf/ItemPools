@@ -1,8 +1,8 @@
 package me.dave.itempools.command;
 
-import me.dave.platyutils.command.Command;
-import me.dave.platyutils.command.SubCommand;
-import me.dave.platyutils.libraries.chatcolor.ChatColorHandler;
+import me.dave.lushlib.command.Command;
+import me.dave.lushlib.command.SubCommand;
+import me.dave.lushlib.libraries.chatcolor.ChatColorHandler;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
