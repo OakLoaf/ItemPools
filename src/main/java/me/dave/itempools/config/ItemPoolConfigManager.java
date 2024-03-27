@@ -1,6 +1,8 @@
 package me.dave.itempools.config;
 
 import me.dave.itempools.ItemPools;
+import me.dave.itempools.pool.Goal;
+import me.dave.itempools.pool.GoalCollection;
 import me.dave.itempools.pool.ItemPool;
 import me.dave.itempools.pool.ItemPoolManager;
 import me.dave.itempools.region.Region;
@@ -58,7 +60,7 @@ public class ItemPoolConfigManager extends Manager {
 
                 regions.put(regionName, region);
 
-                ConcurrentHashMap<Material, ItemPool.PoolMaterialData> poolData = new ConcurrentHashMap<>();
+                GoalCollection goals = new GoalCollection();
                 ConfigurationSection itemsSection = regionsSection.getConfigurationSection("items");
                 if (itemsSection != null) {
                     getConfigurationSections(itemsSection).forEach(dataSection -> {
@@ -67,15 +69,16 @@ public class ItemPoolConfigManager extends Manager {
                             return;
                         }
 
-                        SimpleItemMeta itemMeta = dataSection.contains("meta") ? SimpleItemMeta.create(dataSection.getConfigurationSection("meta")) : null;
+                        ConfigurationSection metaSection = dataSection.getConfigurationSection("meta");
+                        SimpleItemMeta itemMeta = metaSection != null ? SimpleItemMeta.create(metaSection) : null;
                         int goal = dataSection.getInt("goal");
                         int value = dataSection.getInt("current");
 
-                        poolData.put(material, new ItemPool.PoolMaterialData(itemMeta, goal, value));
+                        goals.add(new Goal(material, itemMeta, goal, value));
                     });
                 }
 
-                PlatyUtils.getManager(ItemPoolManager.class).ifPresent(manager -> manager.addItemPool(regionName, new ItemPool(poolData)));
+                PlatyUtils.getManager(ItemPoolManager.class).ifPresent(manager -> manager.addItemPool(regionName, new ItemPool(goals)));
             });
         }
     }
