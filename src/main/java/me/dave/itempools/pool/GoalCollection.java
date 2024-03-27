@@ -12,7 +12,7 @@ public class GoalCollection {
         this.goals = new ConcurrentHashMap<>();
     }
 
-    public Goal getGoal(GoalItem goalItem) {
+    public Goal get(GoalItem goalItem) {
         return goals.get(goalItem);
     }
 

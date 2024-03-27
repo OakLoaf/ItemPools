@@ -1,6 +1,7 @@
 package me.dave.itempools.pool;
 
-import org.bukkit.Material;
+import me.dave.itempools.util.GoalItem;
+import org.bukkit.inventory.ItemStack;
 
 public class ItemPool {
     public GoalCollection goals;
@@ -13,28 +14,20 @@ public class ItemPool {
         this.goals = goals;
     }
 
-    public int getValue(Material material) {
-        return goals.contains(material) ? goals.getGoal(material).getValue() : 0;
+    public int getValue(GoalItem goalItem) {
+        return goals.contains(goalItem) ? goals.get(goalItem).getValue() : 0;
     }
 
-    public void setValue(Material material, int value) {
-        if (goals.contains(material)) {
-            goals.getGoal(material).setValue(value);
-        }
+    public boolean containsGoal(ItemStack itemStack) {
+        return goals.contains(itemStack);
     }
 
-    public void increaseValue(Material material, int value) {
-        if (goals.contains(material)) {
-            goals.getGoal(material).increaseValue(value);
-        }
+    public int getGoal(GoalItem goalItem) {
+        return goals.contains(goalItem) ? goals.get(goalItem).getGoal() : 0;
     }
 
-    public int getGoal(Material material) {
-        return goals.contains(material) ? goals.getGoal(material).getGoal() : 0;
-    }
-
-    public void addGoal(Material material, int goal) {
-        addGoal(new Goal(material, null, goal));
+    public void addGoal(GoalItem goalItem, int goal) {
+        addGoal(new Goal(goalItem, goal));
     }
 
     public void addGoal(Goal goal) {
@@ -42,10 +35,10 @@ public class ItemPool {
     }
 
     public void removeGoal(Goal goal) {
-        removeGoal(goal.getMaterial());
+        removeGoal(goal.getGoalItem());
     }
 
-    public void removeGoal(Material material) {
-        goals.remove(material);
+    public void removeGoal(GoalItem goalItem) {
+        goals.remove(goalItem);
     }
 }

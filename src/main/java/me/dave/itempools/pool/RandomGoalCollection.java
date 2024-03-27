@@ -32,6 +32,6 @@ public class RandomGoalCollection extends GoalCollection {
     }
 
     public Goal nextGoal() {
-        return getGoal(randomCollection.next());
+        return get(randomCollection.next());
     }
 }

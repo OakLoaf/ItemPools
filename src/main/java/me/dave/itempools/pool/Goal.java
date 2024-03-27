@@ -24,6 +24,10 @@ public class Goal {
         return goalItem;
     }
 
+    public boolean isComplete() {
+        return value >= goal;
+    }
+
     public int getGoal() {
         return goal;
     }
