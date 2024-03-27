@@ -1,6 +1,8 @@
 package me.dave.itempools.pool;
 
 import me.dave.itempools.util.GoalItem;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,8 +14,21 @@ public class GoalCollection {
         this.goals = new ConcurrentHashMap<>();
     }
 
+    public Goal get(ItemStack itemStack) {
+        GoalItem goalItem = findGoalItem(itemStack);
+        if (goalItem != null) {
+            return goals.get(goalItem);
+        }
+
+        return null;
+    }
+
     public Goal get(GoalItem goalItem) {
         return goals.get(goalItem);
+    }
+
+    public boolean contains(ItemStack itemStack) {
+        return findGoalItem(itemStack) != null;
     }
 
     public boolean contains(GoalItem goalItem) {
@@ -49,5 +64,20 @@ public class GoalCollection {
 
     public void remove(GoalItem goalItem) {
         goals.remove(goalItem);
+    }
+
+    public void clear() {
+        goals.clear();
+    }
+
+    @Nullable
+    public GoalItem findGoalItem(ItemStack itemStack) {
+        for (GoalItem goalItem : goals.keySet()) {
+            if (goalItem.isValid(itemStack) && !goals.get(goalItem).isComplete()) {
+                return goalItem;
+            }
+        }
+
+        return null;
     }
 }
