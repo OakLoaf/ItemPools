@@ -2,6 +2,7 @@ package me.dave.itempools.region;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.util.BoundingBox;
 
 public class Region {
     private final String name;
@@ -31,7 +32,7 @@ public class Region {
     }
 
     public void setWorld(World world) {
-
+        this.worldName = world.getName();
     }
 
     /**
@@ -54,5 +55,13 @@ public class Region {
 
     public void setPos2(Location pos2) {
         this.pos2 = pos2;
+    }
+
+    public boolean contains(World world, Location location) {
+        if (!world.getName().equalsIgnoreCase(worldName)) {
+            return false;
+        }
+
+        return BoundingBox.of(pos1, pos2).contains(location.toVector());
     }
 }
