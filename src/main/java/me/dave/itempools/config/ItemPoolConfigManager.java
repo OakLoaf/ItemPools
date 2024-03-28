@@ -22,6 +22,11 @@ public class ItemPoolConfigManager extends Manager {
     public void onEnable() {
         ItemPools.getInstance().saveDefaultResource("item-pools.yml");
         FileConfiguration regionsConfig = ItemPools.getInstance().getConfigResource("item-pools.yml");
+        ItemPoolManager itemPoolManager = ItemPools.getInstance().getManager(ItemPoolManager.class).orElse(null);
+        if (itemPoolManager == null) {
+            ItemPools.getInstance().getLogger().severe("ItemPoolManager has not correctly loaded - please report this");
+            return;
+        }
 
         ConfigurationSection poolsSection = regionsConfig.getConfigurationSection("pools");
         if (poolsSection != null) {
@@ -64,28 +69,25 @@ public class ItemPoolConfigManager extends Manager {
                     }));
                 }
 
-                ItemPools.getInstance().getManager(ItemPoolDataManager.class).ifPresentOrElse(
-                    poolDataManager -> poolDataManager.loadItemPoolData(poolId).thenAccept(itemPoolData -> {
-                        ItemPools.getInstance().getManager(ItemPoolManager.class).ifPresent(manager -> manager.addItemPool(poolId, new ItemPool(region, itemPoolData.goals())));
-                    }),
-                    () -> {
-                        ConfigurationSection goalsSection = poolSection.getConfigurationSection("goals");
-                        if (goalsSection != null) {
-                            YamlUtils.getConfigurationSections(goalsSection).forEach(dataSection -> {
-                                GoalItem goalItem = GoalItem.create(dataSection);
-                                if (goalItem == null) {
-                                    return;
-                                }
-
-                                int goal = dataSection.getInt("goal");
-                                int value = dataSection.getInt("current");
-
-                                goals.add(new Goal(dataSection.getName(), goalItem, goal, value));
-                            });
+                ConfigurationSection goalsSection = poolSection.getConfigurationSection("goals");
+                if (goalsSection != null) {
+                    YamlUtils.getConfigurationSections(goalsSection).forEach(goalSection -> {
+                        GoalItem goalItem = GoalItem.create(goalSection);
+                        if (goalItem == null) {
+                            return;
                         }
 
-                        ItemPools.getInstance().getManager(ItemPoolManager.class).ifPresent(manager -> manager.addItemPool(poolId, new ItemPool(region, goals)));
+                        int goal = goalSection.getInt("goal");
+                        int value = goalSection.getInt("current");
+
+                        goals.add(new Goal(goalSection.getName(), goalItem, goal, value));
                     });
+                }
+
+                ItemPool defaultItemPool = new ItemPool(region, goals);
+                ItemPools.getInstance().getManager(ItemPoolDataManager.class).ifPresentOrElse(
+                    poolDataManager -> poolDataManager.loadItemPoolData(poolId).thenAccept(itemPoolData -> itemPoolManager.addItemPool(poolId, itemPoolData != null ? new ItemPool(region, itemPoolData.goals()) : defaultItemPool)),
+                    () -> itemPoolManager.addItemPool(poolId, defaultItemPool));
             });
         }
     }

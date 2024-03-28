@@ -1,5 +1,6 @@
 package me.dave.itempools.data;
 
+import me.dave.itempools.pool.ItemPool;
 import me.dave.lushlib.manager.Manager;
 import org.enchantedskies.EnchantedStorage.IOHandler;
 
@@ -23,6 +24,10 @@ public class ItemPoolDataManager extends Manager {
 
     public CompletableFuture<ItemPoolGoalData> loadItemPoolData(String poolId) {
         return ioHandler.loadData(poolId);
+    }
+
+    public void saveItemPoolData(ItemPool itemPool) {
+        saveItemPoolData(ItemPoolGoalData.from(itemPool));
     }
 
     public void saveItemPoolData(ItemPoolGoalData itemPoolData) {

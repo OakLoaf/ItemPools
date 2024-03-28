@@ -71,6 +71,10 @@ public class ItemPoolManager extends Manager {
         return itemPools.get(name);
     }
 
+    public Collection<ItemPool> getItemPools() {
+        return itemPools.values();
+    }
+
     public void addItemPool(String regionName, ItemPool itemPool) {
         itemPools.put(regionName, itemPool);
     }
