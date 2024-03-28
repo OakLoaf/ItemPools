@@ -1,5 +1,5 @@
 plugins {
-    java
+    `java-library`
     `maven-publish`
     id("com.github.johnrengelman.shadow") version("7.1.2")
 }
@@ -11,6 +11,7 @@ repositories {
     mavenCentral()
     mavenLocal()
     maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") } // Spigot
+    maven { url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")} // PlaceholderAPI
     maven { url = uri("https://mvn-repo.arim.space/lesser-gpl3/") } // MorePaperLib
     maven { url = uri("https://repo.smrt-1.com/releases/") } // LushLib
     maven { url = uri("https://repo.smrt-1.com/snapshots/") } // LushLib
@@ -18,7 +19,8 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot:1.20.1-R0.1-SNAPSHOT")
-    implementation("me.dave:LushLib:0.1.1")
+    compileOnly("me.clip:placeholderapi:2.11.2")
+    implementation("me.dave:LushLib:0.1.2.1")
 }
 
 java {

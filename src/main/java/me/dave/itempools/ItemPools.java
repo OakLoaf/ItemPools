@@ -3,8 +3,11 @@ package me.dave.itempools;
 import me.dave.itempools.command.ItemPoolsCommand;
 import me.dave.itempools.config.GoalProviderConfigManager;
 import me.dave.itempools.config.ItemPoolConfigManager;
+import me.dave.itempools.hook.PlaceholderAPIHook;
 import me.dave.itempools.pool.ItemPoolManager;
 import me.dave.lushlib.LushLib;
+import me.dave.lushlib.hook.Hook;
+import me.dave.lushlib.module.Module;
 import me.dave.lushlib.plugin.SpigotPlugin;
 
 public final class ItemPools extends SpigotPlugin {
@@ -24,11 +27,16 @@ public final class ItemPools extends SpigotPlugin {
             new ItemPoolConfigManager()
         );
 
+        addHook("PlaceholderAPI", () -> registerHook(new PlaceholderAPIHook()));
+        hooks.values().forEach(Hook::enable);
+
         registerCommand(new ItemPoolsCommand());
     }
 
     @Override
     public void onDisable() {
+        unregisterAllHooks();
+        unregisterAllModules();
         LushLib.getInstance().disable();
     }
 

@@ -71,12 +71,18 @@ public class GoalCollection {
 
     @Nullable
     public GoalItem findGoalItem(ItemStack itemStack) {
+        GoalItem completeGoalItem = null;
+
         for (GoalItem goalItem : goals.keySet()) {
-            if (goalItem.isValid(itemStack) && !goals.get(goalItem).isComplete()) {
-                return goalItem;
+            if (goalItem.isValid(itemStack)) {
+                if (goals.get(goalItem).isComplete()) {
+                    completeGoalItem = goalItem;
+                } else {
+                    return goalItem;
+                }
             }
         }
 
-        return null;
+        return completeGoalItem;
     }
 }

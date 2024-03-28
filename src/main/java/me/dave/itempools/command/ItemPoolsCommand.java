@@ -6,13 +6,15 @@ import me.dave.lushlib.libraries.chatcolor.ChatColorHandler;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ItemPoolsCommand extends Command {
 
     public ItemPoolsCommand() {
         super("itempools");
-        addSubCommand(new CreateCommand());
+        addSubCommand(new CreateSubCommand());
+        addSubCommand(new EditSubCommand());
     }
 
     @Override
@@ -25,9 +27,9 @@ public class ItemPoolsCommand extends Command {
         return List.of();
     }
 
-    private static class CreateCommand extends SubCommand {
+    private static class CreateSubCommand extends SubCommand {
 
-        public CreateCommand() {
+        public CreateSubCommand() {
             super("create");
         }
 
@@ -43,7 +45,19 @@ public class ItemPoolsCommand extends Command {
                 return List.of("test1", "test2");
             }
 
-            return List.of();
+            return Collections.emptyList();
+        }
+    }
+
+    private static class EditSubCommand extends SubCommand {
+
+        public EditSubCommand() {
+            super("edit");
+        }
+
+        @Override
+        public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
+            return false;
         }
     }
 }

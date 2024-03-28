@@ -17,6 +17,7 @@ public class GoalProviderConfigManager extends Manager {
 
     @Override
     public void onEnable() {
+        ItemPools.getInstance().saveDefaultResource("goal-provider.yml");
         FileConfiguration providerConfig = ItemPools.getInstance().getConfigResource("goal-provider.yml");
         goalProviders = new ConcurrentHashMap<>();
 

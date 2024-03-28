@@ -10,6 +10,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,6 +33,9 @@ public class ItemPoolManager extends Manager {
                         ItemStack itemStack = item.getItemStack();
                         int amount = itemStack.getAmount();
                         Goal goal = itemPool.getGoalCollection().get(itemStack);
+                        if (goal == null || goal.isComplete()) {
+                            return;
+                        }
 
                         int increase;
                         if (goal.getAmountRemaining() > amount) {
@@ -60,6 +64,11 @@ public class ItemPoolManager extends Manager {
             itemPools.clear();
             itemPools = null;
         }
+    }
+
+    @Nullable
+    public ItemPool getItemPool(String name) {
+        return itemPools.get(name);
     }
 
     public void addItemPool(String regionName, ItemPool itemPool) {

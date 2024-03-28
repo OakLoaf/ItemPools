@@ -20,6 +20,7 @@ public class ItemPoolConfigManager extends Manager {
 
     @Override
     public void onEnable() {
+        ItemPools.getInstance().saveDefaultResource("item-pools.yml");
         FileConfiguration regionsConfig = ItemPools.getInstance().getConfigResource("item-pools.yml");
 
         ConfigurationSection regionsSection = regionsConfig.getConfigurationSection("regions");
@@ -33,7 +34,7 @@ public class ItemPoolConfigManager extends Manager {
                     return;
                 }
 
-                String worldName = regionsSection.getString("world", "undefined");
+                String worldName = regionSection.getString("world", "undefined");
                 World world = Bukkit.getWorld(worldName);
                 if (world == null) {
                     ItemPools.getInstance().getLogger().severe("An invalid world '" + worldName +  "' has been defined for region '" + regionName + "'");
