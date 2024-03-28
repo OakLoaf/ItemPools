@@ -1,12 +1,14 @@
 package me.dave.itempools.goal;
 
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class GoalCollection {
+public class GoalCollection implements Iterable<Goal> {
     private final ConcurrentHashMap<GoalItem, Goal> goals;
 
     public GoalCollection() {
@@ -84,5 +86,11 @@ public class GoalCollection {
         }
 
         return completeGoalItem;
+    }
+
+    @NotNull
+    @Override
+    public Iterator<Goal> iterator() {
+        return goals.values().iterator();
     }
 }

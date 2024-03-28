@@ -4,12 +4,12 @@ import me.dave.itempools.ItemPools;
 import me.dave.itempools.goal.RandomGoalCollection;
 import me.dave.itempools.goal.WeightedGoal;
 import me.dave.itempools.goal.GoalItem;
+import me.dave.itempools.util.YamlUtils;
 import me.dave.lushlib.manager.Manager;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GoalProviderConfigManager extends Manager {
@@ -23,9 +23,9 @@ public class GoalProviderConfigManager extends Manager {
 
         ConfigurationSection providersSection = providerConfig.getConfigurationSection("providers");
         if (providersSection != null) {
-            getConfigurationSections(providersSection).forEach(providerSection -> {
+            YamlUtils.getConfigurationSections(providersSection).forEach(providerSection -> {
                 RandomGoalCollection goals = new RandomGoalCollection();
-                getConfigurationSections(providerSection).forEach(dataSection -> {
+                YamlUtils.getConfigurationSections(providerSection).forEach(dataSection -> {
                     GoalItem goalItem = GoalItem.create(dataSection);
                     if (goalItem == null) {
                         return;
@@ -35,7 +35,7 @@ public class GoalProviderConfigManager extends Manager {
                     int goal = dataSection.getInt("goal");
                     int value = dataSection.getInt("current");
 
-                    goals.add(new WeightedGoal(goalItem, goal, value, weight));
+                    goals.add(new WeightedGoal(dataSection.getName(), goalItem, goal, value, weight));
                 });
 
                 goalProviders.put(providerSection.getName(), goals);
@@ -54,14 +54,5 @@ public class GoalProviderConfigManager extends Manager {
     @Nullable
     public RandomGoalCollection getProvider(String name) {
         return goalProviders.get(name);
-    }
-
-    private static List<ConfigurationSection> getConfigurationSections(ConfigurationSection configurationSection) {
-        return configurationSection.getValues(false)
-            .values()
-            .stream()
-            .filter(sectionRaw -> sectionRaw instanceof ConfigurationSection)
-            .map(sectionRaw -> (ConfigurationSection) sectionRaw)
-            .toList();
     }
 }

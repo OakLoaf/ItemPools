@@ -3,6 +3,7 @@ package me.dave.itempools;
 import me.dave.itempools.command.ItemPoolsCommand;
 import me.dave.itempools.config.GoalProviderConfigManager;
 import me.dave.itempools.config.ItemPoolConfigManager;
+import me.dave.itempools.data.ItemPoolDataManager;
 import me.dave.itempools.hook.PlaceholderAPIHook;
 import me.dave.itempools.pool.ItemPoolManager;
 import me.dave.lushlib.LushLib;
@@ -24,6 +25,7 @@ public final class ItemPools extends SpigotPlugin {
         registerManager(
             new GoalProviderConfigManager(),
             new ItemPoolManager(),
+            new ItemPoolDataManager(),
             new ItemPoolConfigManager()
         );
 

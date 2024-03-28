@@ -3,20 +3,27 @@ package me.dave.itempools.goal;
 import org.jetbrains.annotations.NotNull;
 
 public class Goal {
+    private final String id;
     private final GoalItem goalItem;
     private int goal;
     private int value;
 
-    public Goal(@NotNull GoalItem goalItem, int goal) {
+    public Goal(@NotNull String id, @NotNull GoalItem goalItem, int goal) {
+        this.id = id;
         this.goalItem = goalItem;
         this.goal = goal;
         this.value = 0;
     }
 
-    public Goal(@NotNull GoalItem goalItem, int goal, int value) {
+    public Goal(@NotNull String id, @NotNull GoalItem goalItem, int goal, int value) {
+        this.id = id;
         this.goalItem = goalItem;
         this.goal = goal;
         this.value = value;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public GoalItem getGoalItem() {

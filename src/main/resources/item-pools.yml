@@ -1,18 +1,21 @@
-regions:
-  example-region:
+pools:
+  example-pool:
     world: world
     pos1: 12,100,23
     pos2: 64,23,100
-    items:
+    goals:
       dirt:
+        type: dirt
         goal: 64
-      iron_ingot:
+      iron:
+        type: iron_ingot
         meta:
           custom-model-data: 5
         goal: 32
       carrot:
+        type: carrot
         goal: 128
-  example-provider-region:
+  example-provider-pool:
     world: world
     pos1: 15,46,15
     pos2: 18,47,18
