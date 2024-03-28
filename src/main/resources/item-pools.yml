@@ -6,15 +6,12 @@ regions:
     items:
       dirt:
         goal: 64
-        current: 0
       iron_ingot:
         meta:
           custom-model-data: 5
         goal: 32
-        current: 10
       carrot:
         goal: 128
-        current: 14
   example-provider-region:
     world: world
     pos1: 15,46,15
