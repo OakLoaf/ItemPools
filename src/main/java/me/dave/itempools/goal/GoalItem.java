@@ -53,7 +53,8 @@ public class GoalItem {
 
     @Nullable
     public static GoalItem create(ConfigurationSection configurationSection) {
-        Material material = StringUtils.getEnum(configurationSection.getName(), Material.class).orElse(null);
+        String materialRaw = configurationSection.contains("type") ? configurationSection.getString("type") : configurationSection.getName();
+        Material material = StringUtils.getEnum(materialRaw, Material.class).orElse(null);
         if (material == null) {
             return null;
         }
