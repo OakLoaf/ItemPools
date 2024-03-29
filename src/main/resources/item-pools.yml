@@ -3,22 +3,32 @@ pools:
     world: world
     pos1: 12,100,23
     pos2: 64,23,100
+    completion-commands:
+    - "say @a Completed Example Pool!"
     goals:
       dirt:
         type: dirt
         goal: 64
+        completion-commands:
+        - "say @a Completed Dirt!"
       iron:
         type: iron_ingot
         meta:
           custom-model-data: 5
         goal: 32
+        completion-commands:
+        - "say @a Completed Iron!"
       carrot:
         type: carrot
         goal: 128
+        completion-commands:
+        - "say @a Completed Carrots!"
   example-provider-pool:
     world: world
     pos1: 15,46,15
     pos2: 18,47,18
+    completion-commands:
+    - "say @a Completed Example Provider Pool!"
     goal-providers:
       example-crops: 2
       example-gems: 1

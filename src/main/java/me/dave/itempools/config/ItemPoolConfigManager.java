@@ -16,6 +16,8 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.List;
+
 public class ItemPoolConfigManager extends Manager {
 
     @Override
@@ -69,6 +71,8 @@ public class ItemPoolConfigManager extends Manager {
                     }));
                 }
 
+                List<String> poolCompletionCommands = poolSection.getStringList("completion-commands");
+
                 ConfigurationSection goalsSection = poolSection.getConfigurationSection("goals");
                 if (goalsSection != null) {
                     YamlUtils.getConfigurationSections(goalsSection).forEach(goalSection -> {
@@ -79,14 +83,24 @@ public class ItemPoolConfigManager extends Manager {
 
                         int goal = goalSection.getInt("goal");
                         int value = goalSection.getInt("current");
+                        boolean completed = goalSection.getBoolean("completed");
+                        List<String> goalCompletionCommands = goalSection.getStringList("completion-commands");
 
-                        goals.add(new Goal(goalSection.getName(), goalItem, goal, value));
+                        goals.add(new Goal(goalSection.getName(), goalItem, goal, value, completed, goalCompletionCommands));
                     });
                 }
 
-                ItemPool defaultItemPool = new ItemPool(region, goals);
+                ItemPool defaultItemPool = new ItemPool(region, goals, poolCompletionCommands);
                 ItemPools.getInstance().getManager(ItemPoolDataManager.class).ifPresentOrElse(
-                    poolDataManager -> poolDataManager.loadItemPoolData(poolId).thenAccept(itemPoolData -> itemPoolManager.addItemPool(poolId, itemPoolData != null ? new ItemPool(region, itemPoolData.goals()) : defaultItemPool)),
+                    poolDataManager -> poolDataManager.loadItemPoolData(poolId).thenAccept(itemPoolData -> {
+                        if (itemPoolData != null) {
+                            GoalCollection loadedGoals = itemPoolData.goals();
+                            loadedGoals.forEach(goal -> goal.setCompletionCommands(goals.get(goal.getGoalItem()).getCompletionCommands()));
+                            itemPoolManager.addItemPool(poolId, new ItemPool(region, loadedGoals, poolCompletionCommands));
+                        } else {
+                            itemPoolManager.addItemPool(poolId, defaultItemPool);
+                        }
+                    }),
                     () -> itemPoolManager.addItemPool(poolId, defaultItemPool));
             });
         }

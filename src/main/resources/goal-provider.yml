@@ -3,22 +3,36 @@ providers:
     potato:
       weight: 1
       goal: 64
+      completion-commands:
+      - "say @a Completed Potatoes!"
     beetroot:
       weight: 1
       goal: 64
+      completion-commands:
+      - "say @a Completed Beetroot!"
     carrot:
       weight: 1
       goal: 64
+      completion-commands:
+      - "say @a Completed Carrots!"
   example-gems:
     diamond:
       weight: 1
       goal: 20
+      completion-commands:
+      - "say @a Completed Diamonds!"
     emerald:
       weight: 1
       goal: 15
+      completion-commands:
+      - "say @a Completed Emeralds!"
     gold_ingot:
       weight: 1
       goal: 64
+      completion-commands:
+      - "say @a Completed Gold Ingots!"
     redstone:
       weight: 1
       goal: 128
+      completion-commands:
+      - "say @a Completed Redstone!"

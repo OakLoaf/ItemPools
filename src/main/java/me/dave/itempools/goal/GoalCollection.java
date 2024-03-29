@@ -77,7 +77,7 @@ public class GoalCollection implements Iterable<Goal> {
 
         for (GoalItem goalItem : goals.keySet()) {
             if (goalItem.isValid(itemStack)) {
-                if (goals.get(goalItem).isComplete()) {
+                if (goals.get(goalItem).hasCompleted()) {
                     completeGoalItem = goalItem;
                 } else {
                     return goalItem;

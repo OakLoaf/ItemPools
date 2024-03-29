@@ -27,13 +27,28 @@ public class ItemPoolManager extends Manager {
         itemPools = new ConcurrentHashMap<>();
         poolHeartbeat = Bukkit.getScheduler().runTaskTimer(ItemPools.getInstance(), () -> ItemPools.getInstance().getManager(ItemPoolConfigManager.class).ifPresent(itemPoolManager -> {
             itemPools.values().forEach(itemPool -> {
+                if (itemPool.hasCompleted()) {
+                    return;
+                }
+
+                for (Goal goal : itemPool.getGoalCollection()) {
+                    if (!goal.hasCompleted() && goal.isCompletable()) {
+                        goal.complete();
+                    }
+                }
+
+                if (itemPool.isCompletable()) {
+                    itemPool.complete();
+                    return;
+                }
+
                 Collection<Entity> entities = itemPool.getRegion().getEntities(entity -> entity.getType().equals(EntityType.DROPPED_ITEM));
                 entities.forEach(entity -> {
                     if (entity instanceof Item item) {
                         ItemStack itemStack = item.getItemStack();
                         int amount = itemStack.getAmount();
                         Goal goal = itemPool.getGoalCollection().get(itemStack);
-                        if (goal == null || goal.isComplete()) {
+                        if (goal == null || goal.hasCompleted()) {
                             return;
                         }
 
@@ -47,6 +62,9 @@ public class ItemPoolManager extends Manager {
                         }
 
                         goal.increaseValue(increase);
+                        if (goal.isCompletable()) {
+                            goal.complete();
+                        }
                     }
                 });
             });
