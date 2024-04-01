@@ -93,12 +93,16 @@ public class ItemPoolConfigManager extends Manager {
                 ItemPool defaultItemPool = new ItemPool(region, goals, poolCompletionCommands);
                 ItemPools.getInstance().getManager(ItemPoolDataManager.class).ifPresentOrElse(
                     poolDataManager -> poolDataManager.loadItemPoolData(poolId).thenAccept(itemPoolData -> {
-                        if (itemPoolData != null) {
-                            GoalCollection loadedGoals = itemPoolData.goals();
-                            loadedGoals.forEach(goal -> goal.setCompletionCommands(goals.get(goal.getGoalItem()).getCompletionCommands()));
-                            itemPoolManager.addItemPool(poolId, new ItemPool(region, loadedGoals, poolCompletionCommands));
-                        } else {
-                            itemPoolManager.addItemPool(poolId, defaultItemPool);
+                        try {
+                            if (itemPoolData != null) {
+                                GoalCollection loadedGoals = itemPoolData.goals();
+                                loadedGoals.forEach(goal -> goal.setCompletionCommands(loadedGoals.get(goal.getGoalItem()).getCompletionCommands()));
+                                itemPoolManager.addItemPool(poolId, new ItemPool(region, loadedGoals, poolCompletionCommands));
+                            } else {
+                                itemPoolManager.addItemPool(poolId, defaultItemPool);
+                            }
+                        } catch (Throwable e) {
+                            e.printStackTrace();
                         }
                     }),
                     () -> itemPoolManager.addItemPool(poolId, defaultItemPool));
