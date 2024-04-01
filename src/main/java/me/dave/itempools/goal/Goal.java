@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 
-public class Goal {
+public class Goal implements Cloneable {
     private final String id;
     private final GoalItem goalItem;
     private int goal;
@@ -113,5 +113,15 @@ public class Goal {
 
     public void setCompletionCommands(List<String> completionCommands) {
         this.completionCommands = completionCommands;
+    }
+
+    @Override
+    public Goal clone() {
+        try {
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return (Goal) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

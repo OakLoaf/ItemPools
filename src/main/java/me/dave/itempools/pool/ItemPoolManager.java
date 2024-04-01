@@ -93,8 +93,8 @@ public class ItemPoolManager extends Manager {
         return itemPools.values();
     }
 
-    public void addItemPool(String regionName, ItemPool itemPool) {
-        itemPools.put(regionName, itemPool);
+    public void addItemPool(ItemPool itemPool) {
+        itemPools.put(itemPool.getId(), itemPool);
     }
 
     public void removeItemPool(String regionName) {

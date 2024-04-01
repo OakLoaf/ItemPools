@@ -25,7 +25,11 @@ public class GoalCollection implements Iterable<Goal> {
     }
 
     public Goal get(GoalItem goalItem) {
-        return goals.get(goalItem);
+        return goals.get(goalItem).clone();
+    }
+
+    public Collection<Goal> values() {
+        return goals.values();
     }
 
     public boolean contains(ItemStack itemStack) {

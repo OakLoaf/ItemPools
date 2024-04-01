@@ -11,13 +11,13 @@ import java.util.Collections;
 import java.util.function.Predicate;
 
 public class Region {
-    private final String name;
+    private final String id;
     private String worldName;
     private Location pos1;
     private Location pos2;
 
-    public Region(String name, World world, Location pos1, Location pos2) {
-        this.name = name;
+    public Region(String id, World world, Location pos1, Location pos2) {
+        this.id = id;
         this.worldName = world.getName();
         this.pos1 = pos1;
         this.pos2 = pos2;
@@ -26,8 +26,8 @@ public class Region {
     /**
      * @return Name of the region
      */
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
     /**
