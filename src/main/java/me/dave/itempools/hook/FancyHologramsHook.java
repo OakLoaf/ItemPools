@@ -37,7 +37,7 @@ public class FancyHologramsHook extends Hook {
 
     private void updateHolograms() {
         HologramManager hologramManager = FancyHologramsPlugin.get().getHologramManager();
-        ItemPools.getInstance().getManager(ItemPoolManager.class).ifPresent(poolManager -> poolManager.getItemPools().forEach(itemPool -> hologramManager.getHologram("ip_" + itemPool.getId()).ifPresent(hologram -> {
+        ItemPools.getInstance().getManager(ItemPoolManager.class).ifPresent(poolManager -> poolManager.getItemPools().forEach(itemPool -> hologramManager.getHologram("itempool_" + itemPool.getId()).ifPresent(hologram -> {
             HologramData hologramData = hologram.getData();
             if (hologramData.getTypeData() instanceof TextHologramData textData) {
                 List<String> text = new ArrayList<>();
