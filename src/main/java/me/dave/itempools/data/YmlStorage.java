@@ -32,11 +32,14 @@ public class YmlStorage implements Storage<ItemPoolGoalData, String> {
                         return;
                     }
 
-                    int goal = goalSection.getInt("goal");
-                    int value = goalSection.getInt("current");
-                    boolean completed = goalSection.getBoolean("completed", false);
-
-                    goals.add(new Goal(goalSection.getName(), goalItem, goal, value, completed));
+                    goals.add(new Goal.Builder(goalSection.getName())
+                        .setDisplayName(goalSection.getString("display-name"))
+                        .setGoalItem(goalItem)
+                        .setGoal(goalSection.getInt("goal"))
+                        .setValue(goalSection.getInt("current"))
+                        .setCompleted(goalSection.getBoolean("completed", false))
+                        .build()
+                    );
                 });
             }
 
@@ -55,6 +58,9 @@ public class YmlStorage implements Storage<ItemPoolGoalData, String> {
         itemPoolData.goals().forEach(goal -> {
             ConfigurationSection goalSection = poolSection.createSection("goals." + goal.getId());
 
+            if (goal.getDisplayName() != null) {
+                goalSection.set("display-name", goal.getDisplayName());
+            }
             goalSection.set("current", goal.getValue());
             goalSection.set("goal", goal.getGoal());
             goalSection.set("completed", goal.hasCompleted());

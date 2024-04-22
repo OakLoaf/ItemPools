@@ -10,7 +10,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GoalProviderConfigManager extends Manager {
@@ -32,13 +31,16 @@ public class GoalProviderConfigManager extends Manager {
                         return;
                     }
 
-                    double weight = dataSection.getDouble("weight", 1);
-                    int goal = dataSection.getInt("goal");
-                    int value = dataSection.getInt("current");
-                    boolean completed = dataSection.getBoolean("completed", false);
-                    List<String> completionCommands = dataSection.getStringList("completion-commands");
-
-                    goals.add(new WeightedGoal(dataSection.getName(), goalItem, goal, value, completed, completionCommands, weight));
+                    goals.add(new WeightedGoal.Builder(dataSection.getName())
+                        .setWeight(dataSection.getDouble("weight", 1))
+                        .setDisplayName(dataSection.getString("display-name"))
+                        .setGoalItem(goalItem)
+                        .setGoal(dataSection.getInt("goal"))
+                        .setValue(dataSection.getInt("current"))
+                        .setCompleted(dataSection.getBoolean("completed", false))
+                        .setCompletionCommands(dataSection.getStringList("completion-commands"))
+                        .build()
+                    );
                 });
 
                 goalProviders.put(providerSection.getName(), goals);

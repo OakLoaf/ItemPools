@@ -4,6 +4,7 @@ import me.dave.itempools.command.ItemPoolsCommand;
 import me.dave.itempools.config.GoalProviderConfigManager;
 import me.dave.itempools.config.ItemPoolConfigManager;
 import me.dave.itempools.data.ItemPoolDataManager;
+import me.dave.itempools.hook.FancyHologramsHook;
 import me.dave.itempools.hook.PlaceholderAPIHook;
 import me.dave.itempools.pool.ItemPoolManager;
 import me.dave.lushlib.LushLib;
@@ -29,6 +30,7 @@ public final class ItemPools extends SpigotPlugin {
         );
 
         addHook("PlaceholderAPI", () -> registerHook(new PlaceholderAPIHook()));
+        addHook("FancyHolograms", () -> registerHook(new FancyHologramsHook()));
         hooks.values().forEach(Hook::enable);
 
         registerCommand(new ItemPoolsCommand());

@@ -3,46 +3,23 @@ package me.dave.itempools.goal;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Goal implements Cloneable {
     private final String id;
+    private final String displayName;
     private final GoalItem goalItem;
     private int goal;
     private int value;
     private boolean completed;
     private List<String> completionCommands;
 
-    public Goal(@NotNull String id, @NotNull GoalItem goalItem, int goal) {
+    protected Goal(@NotNull String id, @Nullable String displayName, @NotNull GoalItem goalItem, int goal, int value, boolean completed, List<String> completionCommands) {
         this.id = id;
-        this.goalItem = goalItem;
-        this.goal = goal;
-        this.value = 0;
-        this.completionCommands = Collections.emptyList();
-    }
-
-    public Goal(@NotNull String id, @NotNull GoalItem goalItem, int goal, int value) {
-        this.id = id;
-        this.goalItem = goalItem;
-        this.goal = goal;
-        this.value = value;
-        this.completed = false;
-        this.completionCommands = Collections.emptyList();
-    }
-
-    public Goal(@NotNull String id, @NotNull GoalItem goalItem, int goal, int value, boolean completed) {
-        this.id = id;
-        this.goalItem = goalItem;
-        this.goal = goal;
-        this.value = value;
-        this.completed = completed;
-        this.completionCommands = Collections.emptyList();
-    }
-
-    public Goal(@NotNull String id, @NotNull GoalItem goalItem, int goal, int value, boolean completed, List<String> completionCommands) {
-        this.id = id;
+        this.displayName = displayName;
         this.goalItem = goalItem;
         this.goal = goal;
         this.value = value;
@@ -77,6 +54,10 @@ public class Goal implements Cloneable {
 
     public String getId() {
         return id;
+    }
+
+    public String getDisplayName() {
+        return displayName != null ? displayName : id;
     }
 
     public GoalItem getGoalItem() {
@@ -122,6 +103,54 @@ public class Goal implements Cloneable {
             return (Goal) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
+        }
+    }
+
+    public static class Builder {
+        protected final String id;
+        protected String displayName;
+        protected GoalItem goalItem;
+        protected int goal;
+        protected int value;
+        protected boolean completed;
+        protected List<String> completionCommands = new ArrayList<>();
+
+        public Builder(String id) {
+            this.id = id;
+        }
+
+        public Builder setDisplayName(String displayName) {
+            this.displayName = displayName;
+            return this;
+        }
+
+        public Builder setGoalItem(GoalItem goalItem) {
+            this.goalItem = goalItem;
+            return this;
+        }
+
+        public Builder setGoal(int goal) {
+            this.goal = goal;
+            return this;
+        }
+
+        public Builder setValue(int value) {
+            this.value = value;
+            return this;
+        }
+
+        public Builder setCompleted(boolean completed) {
+            this.completed = completed;
+            return this;
+        }
+
+        public Builder setCompletionCommands(List<String> completionCommands) {
+            this.completionCommands = completionCommands;
+            return this;
+        }
+
+        public Goal build() {
+            return new Goal(id, displayName, goalItem, goal, value, completed, completionCommands);
         }
     }
 }

@@ -7,22 +7,30 @@ import java.util.List;
 public class WeightedGoal extends Goal {
     private final double weight;
 
-    public WeightedGoal(@NotNull String id, @NotNull GoalItem goalItem, int goal, double weight) {
-        super(id, goalItem, goal);
-        this.weight = weight;
-    }
-
-    public WeightedGoal(@NotNull String id, @NotNull GoalItem goalItem, int goal, int value, double weight) {
-        super(id, goalItem, goal, value);
-        this.weight = weight;
-    }
-
-    public WeightedGoal(@NotNull String id, @NotNull GoalItem goalItem, int goal, int value, boolean completed, List<String> completionCommands, double weight) {
-        super(id, goalItem, goal, value, completed, completionCommands);
+    private WeightedGoal(@NotNull String id, String displayName, @NotNull GoalItem goalItem, int goal, int value, boolean completed, List<String> completionCommands, double weight) {
+        super(id, displayName, goalItem, goal, value, completed, completionCommands);
         this.weight = weight;
     }
 
     public double getWeight() {
         return weight;
+    }
+
+    public static class Builder extends Goal.Builder {
+        private double weight;
+
+        public Builder(String id) {
+            super(id);
+        }
+
+        public Builder setWeight(double weight) {
+            this.weight = weight;
+            return this;
+        }
+
+        @Override
+        public WeightedGoal build() {
+            return new WeightedGoal(id, displayName, goalItem, goal, value, completed, completionCommands, weight);
+        }
     }
 }

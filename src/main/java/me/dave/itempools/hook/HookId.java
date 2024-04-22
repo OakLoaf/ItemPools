@@ -1,6 +1,7 @@
 package me.dave.itempools.hook;
 
 public enum HookId {
+    FANCY_HOLOGRAMS("fancy-holograms"),
     PLACEHOLDER_API("placeholder-api");
 
     private final String id;

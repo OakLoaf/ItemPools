@@ -22,7 +22,7 @@ public class PlaceholderAPIHook extends Hook {
     }
 
     @Override
-    public void onEnable() {
+    protected void onEnable() {
         expansion = new PlaceholderExpansion();
         expansion.register();
     }

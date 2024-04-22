@@ -71,12 +71,15 @@ public class ItemPoolConfigManager extends Manager {
                             return;
                         }
 
-                        int target = goalSection.getInt("goal");
-                        int value = goalSection.getInt("current");
-                        boolean completed = goalSection.getBoolean("completed");
-                        List<String> goalCompletionCommands = goalSection.getStringList("completion-commands");
+                        Goal goal = new Goal.Builder(goalSection.getName())
+                            .setDisplayName(goalSection.getString("display-name"))
+                            .setGoalItem(goalItem)
+                            .setGoal(goalSection.getInt("goal"))
+                            .setValue(goalSection.getInt("current"))
+                            .setCompleted(goalSection.getBoolean("completed"))
+                            .setCompletionCommands(goalSection.getStringList("completion-commands"))
+                            .build();
 
-                        Goal goal = new Goal(goalSection.getName(), goalItem, target, value, completed, goalCompletionCommands);
                         defaultGoals.add(goal.clone());
                         goals.add(goal);
                     });
