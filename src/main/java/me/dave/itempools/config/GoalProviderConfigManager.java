@@ -56,6 +56,11 @@ public class GoalProviderConfigManager extends Manager {
         }
     }
 
+    public void reload() {
+        disable();
+        enable();
+    }
+
     @Nullable
     public RandomGoalCollection getProvider(String name) {
         return goalProviders.get(name);

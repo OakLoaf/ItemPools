@@ -26,12 +26,15 @@ public class ItemPoolConfigManager extends Manager {
     public void onEnable() {
         ItemPools.getInstance().saveDefaultResource("item-pools.yml");
         FileConfiguration regionsConfig = ItemPools.getInstance().getConfigResource("item-pools.yml");
+
         ItemPoolManager itemPoolManager = ItemPools.getInstance().getManager(ItemPoolManager.class).orElse(null);
-        if (itemPoolManager == null) {
-            ItemPools.getInstance().getLogger().severe("ItemPoolManager has not correctly loaded - please report this");
+        GoalProviderConfigManager providerManager = ItemPools.getInstance().getManager(GoalProviderConfigManager.class).orElse(null);
+        if (itemPoolManager == null || providerManager == null) {
+            ItemPools.getInstance().getLogger().severe("ItemPoolManager or ProviderManager has not correctly loaded - please report this");
             return;
         }
         itemPoolManager.removeAllItemPools();
+        providerManager.reload();
 
         ConfigurationSection poolsSection = regionsConfig.getConfigurationSection("pools");
         if (poolsSection != null) {
@@ -89,7 +92,7 @@ public class ItemPoolConfigManager extends Manager {
                 List<Pair<String, Integer>> goalProviders = new ArrayList<>();
                 ConfigurationSection providersSection = poolSection.getConfigurationSection("goal-providers");
                 if (providersSection != null) {
-                    providersSection.getKeys(false).forEach(providerName -> ItemPools.getInstance().getManager(GoalProviderConfigManager.class).ifPresent(providerManager -> {
+                    providersSection.getKeys(false).forEach(providerName -> {
                         RandomGoalCollection provider = providerManager.getProvider(providerName);
                         if (provider != null) {
                             int amount = providersSection.getInt(providerName);
@@ -98,7 +101,7 @@ public class ItemPoolConfigManager extends Manager {
                         } else {
                             ItemPools.getInstance().getLogger().severe("Provider '" + providerName + "' at '" + providersSection.getCurrentPath() + "' is not a valid provider");
                         }
-                    }));
+                    });
                 }
 
                 List<String> poolCompletionCommands = poolSection.getStringList("completion-commands");

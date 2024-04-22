@@ -83,6 +83,7 @@ public class ItemPoolsCommand extends Command {
             }
 
             ItemPools.getInstance().getManager(ItemPoolConfigManager.class).ifPresent(ItemPoolConfigManager::reload);
+            ChatColorHandler.sendMessage(sender, "&aReloaded ItemPools");
             return true;
         }
     }
