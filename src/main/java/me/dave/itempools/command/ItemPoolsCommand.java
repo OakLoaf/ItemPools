@@ -1,6 +1,7 @@
 package me.dave.itempools.command;
 
 import me.dave.itempools.ItemPools;
+import me.dave.itempools.config.ItemPoolConfigManager;
 import me.dave.itempools.pool.ItemPool;
 import me.dave.itempools.pool.ItemPoolManager;
 import me.dave.lushlib.command.Command;
@@ -19,6 +20,7 @@ public class ItemPoolsCommand extends Command {
         super("itempools");
         addSubCommand(new CreateSubCommand());
         addSubCommand(new EditSubCommand());
+        addSubCommand(new ReloadSubCommand());
         addSubCommand(new ResetSubCommand());
     }
 
@@ -40,6 +42,11 @@ public class ItemPoolsCommand extends Command {
 
         @Override
         public boolean execute(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command command, @NotNull String label, @NotNull String[] args) {
+            if (!sender.hasPermission("itempools.create")) {
+                ChatColorHandler.sendMessage(sender, "&cIncorrect permissions.");
+                return true;
+            }
+
             ChatColorHandler.sendMessage(sender, "Test message");
             return true;
         }
@@ -53,7 +60,30 @@ public class ItemPoolsCommand extends Command {
 
         @Override
         public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
+            if (!sender.hasPermission("itempools.edit")) {
+                ChatColorHandler.sendMessage(sender, "&cIncorrect permissions.");
+                return true;
+            }
+
             return false;
+        }
+    }
+
+    private static class ReloadSubCommand extends SubCommand {
+
+        public ReloadSubCommand() {
+            super("reload");
+        }
+
+        @Override
+        public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
+            if (!sender.hasPermission("itempools.reload")) {
+                ChatColorHandler.sendMessage(sender, "&cIncorrect permissions.");
+                return true;
+            }
+
+            ItemPools.getInstance().getManager(ItemPoolConfigManager.class).ifPresent(ItemPoolConfigManager::reload);
+            return true;
         }
     }
 
@@ -65,6 +95,11 @@ public class ItemPoolsCommand extends Command {
 
         @Override
         public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
+            if (!sender.hasPermission("itempools.reset")) {
+                ChatColorHandler.sendMessage(sender, "&cIncorrect permissions.");
+                return true;
+            }
+
             if (args.length != 1) {
                 ChatColorHandler.sendMessage(sender, "&cIncorrect usage, try: /itempools reset <pool>");
                 return true;

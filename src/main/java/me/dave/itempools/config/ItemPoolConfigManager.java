@@ -31,6 +31,7 @@ public class ItemPoolConfigManager extends Manager {
             ItemPools.getInstance().getLogger().severe("ItemPoolManager has not correctly loaded - please report this");
             return;
         }
+        itemPoolManager.removeAllItemPools();
 
         ConfigurationSection poolsSection = regionsConfig.getConfigurationSection("pools");
         if (poolsSection != null) {
@@ -127,5 +128,10 @@ public class ItemPoolConfigManager extends Manager {
                     () -> itemPoolManager.addItemPool(builder.build()));
             });
         }
+    }
+
+    public void reload() {
+        disable();
+        enable();
     }
 }
