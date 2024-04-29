@@ -3,12 +3,9 @@ package me.dave.itempools.config;
 import com.mojang.datafixers.util.Pair;
 import me.dave.itempools.ItemPools;
 import me.dave.itempools.data.ItemPoolDataManager;
-import me.dave.itempools.goal.Goal;
-import me.dave.itempools.goal.GoalCollection;
-import me.dave.itempools.goal.RandomGoalCollection;
+import me.dave.itempools.goal.*;
 import me.dave.itempools.pool.*;
 import me.dave.itempools.region.Region;
-import me.dave.itempools.goal.GoalItem;
 import me.dave.itempools.util.YamlUtils;
 import me.dave.lushlib.manager.Manager;
 import org.bukkit.Bukkit;
@@ -93,7 +90,7 @@ public class ItemPoolConfigManager extends Manager {
                 ConfigurationSection providersSection = poolSection.getConfigurationSection("goal-providers");
                 if (providersSection != null) {
                     providersSection.getKeys(false).forEach(providerName -> {
-                        RandomGoalCollection provider = providerManager.getProvider(providerName);
+                        GoalProvider provider = providerManager.getProvider(providerName);
                         if (provider != null) {
                             int amount = providersSection.getInt(providerName);
                             goalProviders.add(new Pair<>(providerName, amount));

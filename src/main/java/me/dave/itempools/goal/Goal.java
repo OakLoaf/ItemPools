@@ -1,5 +1,6 @@
 package me.dave.itempools.goal;
 
+import me.dave.lushlib.utils.IntRange;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -107,13 +108,14 @@ public class Goal implements Cloneable {
     }
 
     public static class Builder {
-        protected final String id;
-        protected String displayName;
-        protected GoalItem goalItem;
-        protected int goal;
-        protected int value;
-        protected boolean completed;
-        protected List<String> completionCommands = new ArrayList<>();
+        private final String id;
+        private String displayName;
+        private GoalItem goalItem;
+        private IntRange goalRange;
+        private int value;
+        private boolean completed;
+        private List<String> completionCommands = new ArrayList<>();
+        private double weight;
 
         public Builder(String id) {
             this.id = id;
@@ -124,13 +126,25 @@ public class Goal implements Cloneable {
             return this;
         }
 
+        public GoalItem getGoalItem() {
+            return goalItem;
+        }
+
         public Builder setGoalItem(GoalItem goalItem) {
             this.goalItem = goalItem;
             return this;
         }
 
         public Builder setGoal(int goal) {
-            this.goal = goal;
+            return setGoalRange(new IntRange(goal, goal));
+        }
+
+        public IntRange getGoalRange() {
+            return goalRange;
+        }
+
+        public Builder setGoalRange(IntRange goalRange) {
+            this.goalRange = goalRange;
             return this;
         }
 
@@ -149,8 +163,17 @@ public class Goal implements Cloneable {
             return this;
         }
 
+        public double getWeight() {
+            return weight;
+        }
+
+        public Builder setWeight(double weight) {
+            this.weight = weight;
+            return this;
+        }
+
         public Goal build() {
-            return new Goal(id, displayName, goalItem, goal, value, completed, completionCommands);
+            return new Goal(id, displayName, goalItem, goalRange.next(), value, completed, completionCommands);
         }
     }
 }

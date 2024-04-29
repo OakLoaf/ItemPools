@@ -5,7 +5,7 @@ import me.dave.itempools.ItemPools;
 import me.dave.itempools.config.GoalProviderConfigManager;
 import me.dave.itempools.goal.Goal;
 import me.dave.itempools.goal.GoalCollection;
-import me.dave.itempools.goal.RandomGoalCollection;
+import me.dave.itempools.goal.GoalProvider;
 import me.dave.itempools.region.Region;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
@@ -59,7 +59,7 @@ public class ItemPool {
                 String providerName = providerData.getFirst();
                 int amount = providerData.getSecond();
 
-                RandomGoalCollection provider = goalProviderManager.getProvider(providerName);
+                GoalProvider provider = goalProviderManager.getProvider(providerName);
                 if (provider != null) {
                     goals.addAll(provider.nextGoals(amount));
                 }

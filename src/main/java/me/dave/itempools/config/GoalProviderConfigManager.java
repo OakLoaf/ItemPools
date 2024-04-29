@@ -1,11 +1,12 @@
 package me.dave.itempools.config;
 
 import me.dave.itempools.ItemPools;
-import me.dave.itempools.goal.RandomGoalCollection;
-import me.dave.itempools.goal.WeightedGoal;
+import me.dave.itempools.goal.Goal;
+import me.dave.itempools.goal.GoalProvider;
 import me.dave.itempools.goal.GoalItem;
 import me.dave.itempools.util.YamlUtils;
 import me.dave.lushlib.manager.Manager;
+import me.dave.lushlib.utils.IntRange;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GoalProviderConfigManager extends Manager {
-    private ConcurrentHashMap<String, RandomGoalCollection> goalProviders;
+    private ConcurrentHashMap<String, GoalProvider> goalProviders;
 
     @Override
     public void onEnable() {
@@ -24,26 +25,25 @@ public class GoalProviderConfigManager extends Manager {
         ConfigurationSection providersSection = providerConfig.getConfigurationSection("providers");
         if (providersSection != null) {
             YamlUtils.getConfigurationSections(providersSection).forEach(providerSection -> {
-                RandomGoalCollection goals = new RandomGoalCollection();
+                GoalProvider goalProvider = new GoalProvider();
                 YamlUtils.getConfigurationSections(providerSection).forEach(dataSection -> {
                     GoalItem goalItem = GoalItem.create(dataSection);
                     if (goalItem == null) {
                         return;
                     }
 
-                    goals.add(new WeightedGoal.Builder(dataSection.getName())
-                        .setWeight(dataSection.getDouble("weight", 1))
+                    goalProvider.add(new Goal.Builder(dataSection.getName())
                         .setDisplayName(dataSection.getString("display-name"))
                         .setGoalItem(goalItem)
-                        .setGoal(dataSection.getInt("goal"))
+                        .setGoalRange(IntRange.parseIntRange(dataSection.getString("goal", "0")))
                         .setValue(dataSection.getInt("current"))
                         .setCompleted(dataSection.getBoolean("completed", false))
                         .setCompletionCommands(dataSection.getStringList("completion-commands"))
-                        .build()
+                        .setWeight(dataSection.getDouble("weight", 1))
                     );
                 });
 
-                goalProviders.put(providerSection.getName(), goals);
+                goalProviders.put(providerSection.getName(), goalProvider);
             });
         }
     }
@@ -62,7 +62,7 @@ public class GoalProviderConfigManager extends Manager {
     }
 
     @Nullable
-    public RandomGoalCollection getProvider(String name) {
+    public GoalProvider getProvider(String name) {
         return goalProviders.get(name);
     }
 }
