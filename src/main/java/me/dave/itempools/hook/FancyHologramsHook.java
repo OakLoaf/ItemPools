@@ -2,7 +2,6 @@ package me.dave.itempools.hook;
 
 import de.oliver.fancyholograms.api.FancyHologramsPlugin;
 import de.oliver.fancyholograms.api.HologramManager;
-import de.oliver.fancyholograms.api.data.HologramData;
 import de.oliver.fancyholograms.api.data.TextHologramData;
 import me.dave.itempools.ItemPools;
 import me.dave.itempools.pool.ItemPoolManager;
