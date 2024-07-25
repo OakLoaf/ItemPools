@@ -58,6 +58,8 @@ public class YmlStorage implements Storage<ItemPoolGoalData, String> {
         itemPoolData.goals().forEach(goal -> {
             ConfigurationSection goalSection = poolSection.createSection("goals." + goal.getId());
 
+            goal.getGoalItem().save(goalSection);
+
             if (goal.getDisplayName() != null) {
                 goalSection.set("display-name", goal.getDisplayName());
             }

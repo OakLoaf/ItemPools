@@ -51,6 +51,14 @@ public class GoalItem {
         return true;
     }
 
+    public void save(ConfigurationSection configurationSection) {
+        configurationSection.set("type", material.getKey().toString());
+        configurationSection.set("meta.display-name", displayName);
+        configurationSection.set("meta.lore", lore);
+        configurationSection.set("meta.custom-model-data", customModelData);
+        configurationSection.set("meta.enchanted", enchanted);
+    }
+
     @Nullable
     public static GoalItem create(ConfigurationSection configurationSection) {
         String materialRaw = configurationSection.contains("type") ? configurationSection.getString("type") : configurationSection.getName();
@@ -65,9 +73,9 @@ public class GoalItem {
         }
 
         String displayName = metaSection.contains("display-name") ? metaSection.getString("display-name") : null;
-        List<String> lore = metaSection.contains("lore") ? configurationSection.getStringList("lore") : null;
-        Integer customModelData = metaSection.contains("custom-model-data") ? configurationSection.getInt("custom-model-data") : null;
-        Boolean enchanted = metaSection.contains("enchanted") ? configurationSection.getBoolean("enchanted") : null;
+        List<String> lore = metaSection.contains("lore") ? metaSection.getStringList("lore") : null;
+        Integer customModelData = metaSection.contains("custom-model-data") ? metaSection.getInt("custom-model-data") : null;
+        Boolean enchanted = metaSection.contains("enchanted") ? metaSection.getBoolean("enchanted") : null;
 
         return new GoalItem(material, displayName, lore, customModelData, enchanted);
     }

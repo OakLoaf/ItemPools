@@ -61,7 +61,7 @@ public class Goal implements Cloneable {
         return displayName != null ? displayName : id;
     }
 
-    public GoalItem getGoalItem() {
+    public @NotNull GoalItem getGoalItem() {
         return goalItem;
     }
 
