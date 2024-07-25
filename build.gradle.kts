@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot:1.20.1-R0.1-SNAPSHOT")
-    compileOnly("de.oliver:FancyHolograms:2.0.6")
+    compileOnly("de.oliver:FancyHolograms:2.3.0")
     compileOnly("me.clip:placeholderapi:2.11.2")
     implementation("org.enchantedskies:EnchantedStorage:3.0.0")
     implementation("me.dave:LushLib:0.1.2.1")
