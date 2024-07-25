@@ -14,6 +14,7 @@ repositories {
     maven { url = uri("https://repo.fancyplugins.de/releases/")} // FancyHolograms
     maven { url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")} // PlaceholderAPI
     maven { url = uri("https://mvn-repo.arim.space/lesser-gpl3/") } // MorePaperLib
+    maven { url = uri("https://repo.xemor.zip/releases/") } // EnchantedStorage
     maven { url = uri("https://repo.smrt-1.com/releases/") } // LushLib
     maven { url = uri("https://repo.smrt-1.com/snapshots/") } // LushLib
 }

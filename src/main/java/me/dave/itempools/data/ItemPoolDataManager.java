@@ -12,12 +12,13 @@ public class ItemPoolDataManager extends Manager {
     @Override
     public void onEnable() {
         ioHandler = new IOHandler<>(new YmlStorage());
+        ioHandler.enable();
     }
 
     @Override
     public void onDisable() {
         if (ioHandler != null) {
-            ioHandler.disableIOHandler();
+            ioHandler.disable();
             ioHandler = null;
         }
     }
