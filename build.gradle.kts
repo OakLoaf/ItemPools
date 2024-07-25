@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "me.dave"
-version = "1.0"
+version = "1.0-beta1"
 
 repositories {
     mavenCentral()
@@ -40,7 +40,7 @@ tasks {
 
         minimize()
 
-        val folder = System.getenv("pluginFolder_1-20")
+        val folder = System.getenv("pluginFolder_1-21")
         if (folder != null) destinationDirectory.set(file(folder))
         archiveFileName.set("${project.name}-${project.version}.jar")
     }
