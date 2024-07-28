@@ -8,16 +8,15 @@ import me.dave.itempools.goal.GoalItem;
 import me.dave.itempools.util.YamlUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.enchantedskies.EnchantedStorage.Storage;
 
 import java.io.File;
 import java.io.IOException;
 
-public class YmlStorage implements Storage<ItemPoolGoalData, String> {
+public class YmlStorage implements Storage {
     private final File dataFile = new File(ItemPools.getInstance().getDataFolder(), "pool-data.yml");
 
     @Override
-    public ItemPoolGoalData load(String poolId) {
+    public ItemPoolGoalData loadPoolData(String poolId) {
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(dataFile);
 
         ConfigurationSection poolSection = yamlConfiguration.getConfigurationSection("pools." + poolId);
@@ -51,7 +50,7 @@ public class YmlStorage implements Storage<ItemPoolGoalData, String> {
     }
 
     @Override
-    public void save(ItemPoolGoalData itemPoolData) {
+    public void savePoolData(ItemPoolGoalData itemPoolData) {
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(dataFile);
 
         ConfigurationSection poolSection = yamlConfiguration.createSection("pools." + itemPoolData.id());

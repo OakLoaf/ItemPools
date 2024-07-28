@@ -110,7 +110,7 @@ public class ItemPoolConfigManager extends Manager {
                     .setCompletionCommands(poolCompletionCommands);
 
                 ItemPools.getInstance().getManager(ItemPoolDataManager.class).ifPresentOrElse(
-                    poolDataManager -> poolDataManager.loadItemPoolData(poolId).thenAccept(itemPoolData -> {
+                    poolDataManager -> poolDataManager.loadPoolData(poolId).thenAccept(itemPoolData -> {
                         try {
                             if (itemPoolData != null) {
                                 GoalCollection loadedGoals = itemPoolData.goals();
