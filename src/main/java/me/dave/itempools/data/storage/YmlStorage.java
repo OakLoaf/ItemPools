@@ -1,6 +1,7 @@
-package me.dave.itempools.data;
+package me.dave.itempools.data.storage;
 
 import me.dave.itempools.ItemPools;
+import me.dave.itempools.data.ItemPoolGoalData;
 import me.dave.itempools.goal.Goal;
 import me.dave.itempools.goal.GoalCollection;
 import me.dave.itempools.goal.GoalItem;

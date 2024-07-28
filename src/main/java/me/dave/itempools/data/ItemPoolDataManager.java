@@ -1,5 +1,6 @@
 package me.dave.itempools.data;
 
+import me.dave.itempools.data.storage.YmlStorage;
 import me.dave.itempools.pool.ItemPool;
 import me.dave.lushlib.manager.Manager;
 import org.enchantedskies.EnchantedStorage.IOHandler;
