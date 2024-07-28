@@ -4,7 +4,7 @@ plugins {
     id("io.github.goooler.shadow") version("8.1.7")
 }
 
-group = "me.dave"
+group = "org.lushplugins"
 version = "1.0-beta3"
 
 repositories {
@@ -22,7 +22,7 @@ dependencies {
     compileOnly("org.spigotmc:spigot:1.20.1-R0.1-SNAPSHOT")
     compileOnly("de.oliver:FancyHolograms:2.3.0")
     compileOnly("me.clip:placeholderapi:2.11.2")
-    implementation("me.dave:LushLib:0.1.2.1")
+    implementation("org.lushplugins:LushLib:0.7.7")
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("com.mysql:mysql-connector-j:8.3.0")
 }
@@ -37,8 +37,8 @@ tasks {
     }
 
     shadowJar {
-        relocate("me.dave.lushlib", "me.dave.itempools.libraries.lushlib")
-        relocate("com.mysql", "org.lushplugins.lushrewards.libraries.mysql")
+        relocate("org.lushplugins.lushlib", "org.lushplugins.itempools.libraries.lushlib")
+        relocate("com.mysql", "org.lushplugins.itempools.libraries.mysql")
 
         minimize {
             exclude(dependency("com.mysql:.*:.*"))
