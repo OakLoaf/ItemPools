@@ -82,6 +82,7 @@ public class ItemPoolsCommand extends Command {
                 return true;
             }
 
+            ItemPools.getInstance().getConfigManager().reload();
             ItemPools.getInstance().getItemPoolConfigManager().reload();
             ChatColorHandler.sendMessage(sender, "&aReloaded ItemPools");
             return true;

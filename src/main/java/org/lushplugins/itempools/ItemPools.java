@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.lushplugins.itempools.command.ItemPoolsCommand;
+import org.lushplugins.itempools.config.ConfigManager;
 import org.lushplugins.itempools.config.GoalProviderConfigManager;
 import org.lushplugins.itempools.config.ItemPoolConfigManager;
 import org.lushplugins.itempools.data.ItemPoolDataManager;
@@ -45,6 +46,7 @@ public final class ItemPools extends SpigotPlugin {
     @Override
     public void onEnable() {
         registerManager(
+            new ConfigManager(),
             new GoalProviderConfigManager(),
             new ItemPoolManager(),
             new ItemPoolDataManager(),
@@ -101,6 +103,10 @@ public final class ItemPools extends SpigotPlugin {
 
         Player player = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
         player.sendPluginMessage(ItemPools.getInstance(), "BungeeCord", out.toByteArray());
+    }
+
+    public ConfigManager getConfigManager() {
+        return getNullableManager(ConfigManager.class);
     }
 
     public GoalProviderConfigManager getGoalProviderConfigManager() {
