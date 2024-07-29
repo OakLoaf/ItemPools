@@ -4,6 +4,7 @@ import org.lushplugins.itempools.ItemPools;
 import org.lushplugins.itempools.data.storage.SQLStorage;
 import org.lushplugins.itempools.data.storage.Storage;
 import org.lushplugins.itempools.data.storage.YmlStorage;
+import org.lushplugins.itempools.goal.GoalCollection;
 import org.lushplugins.itempools.pool.ItemPool;
 import org.lushplugins.lushlib.manager.Manager;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -47,6 +48,23 @@ public class ItemPoolDataManager extends Manager {
         }
 
         ItemPools.getInstance().getLogger().info("Successfully loaded '" + storageType + "' storage");
+    }
+
+    public CompletableFuture<Void> updateGoalData(String poolId) {
+        return loadPoolData(poolId).thenAccept(poolData -> {
+            ItemPool itemPool = ItemPools.getInstance().getItemPoolManager().getItemPool(poolId);
+            if (itemPool == null) {
+                return;
+            }
+
+            GoalCollection goalCollection = itemPool.getGoalCollection();
+            goalCollection.clear();
+            goalCollection.addAll(poolData.goals().values());
+
+            if (!itemPool.hasCompleted() && poolData.completed()) {
+                itemPool.complete();
+            }
+        });
     }
 
     public CompletableFuture<ItemPoolGoalData> loadPoolData(String poolId) {

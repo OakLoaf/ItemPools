@@ -64,6 +64,10 @@ public class ItemPoolManager extends Manager {
                         if (goal.isCompletable()) {
                             goal.complete();
                         }
+
+                        ItemPools.getInstance().getItemPoolDataManager().savePoolData(itemPool).thenAccept((ignored) -> {
+                            // TODO: Send plugin message to other servers
+                        });
                     }
                 });
             });
