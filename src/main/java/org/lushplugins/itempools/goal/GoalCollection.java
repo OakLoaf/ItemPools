@@ -37,6 +37,16 @@ public class GoalCollection implements Iterable<Goal> {
         return goals.get(goalItem).clone();
     }
 
+    public Goal get(String id) {
+        for (Goal goal : goals.values()) {
+            if (goal.getId().equals(id)) {
+                return goal;
+            }
+        }
+
+        return null;
+    }
+
     public Collection<Goal> values() {
         return goals.values();
     }

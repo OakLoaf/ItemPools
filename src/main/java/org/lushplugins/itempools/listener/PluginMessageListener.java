@@ -5,6 +5,9 @@ import com.google.common.io.ByteStreams;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.lushplugins.itempools.ItemPools;
+import org.lushplugins.itempools.goal.Goal;
+import org.lushplugins.itempools.goal.GoalCollection;
+import org.lushplugins.itempools.pool.ItemPool;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -20,18 +23,44 @@ public class PluginMessageListener implements org.bukkit.plugin.messaging.Plugin
 
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String subChannel = in.readUTF();
-        if (subChannel.equals("ItemPools")) {
-            short len = in.readShort();
-            byte[] msgBytes = new byte[len];
-            in.readFully(msgBytes);
+        if (!subChannel.equals("ItemPools")) {
+            return;
+        }
 
-            DataInputStream msgIn = new DataInputStream(new ByteArrayInputStream(msgBytes));
-            try {
-                String poolId = msgIn.readUTF();
-                ItemPools.getInstance().getItemPoolDataManager().updateGoalData(poolId);
-            } catch (IOException e) {
-                e.printStackTrace();
+        short len = in.readShort();
+        byte[] msgBytes = new byte[len];
+        in.readFully(msgBytes);
+
+        DataInputStream msgIn = new DataInputStream(new ByteArrayInputStream(msgBytes));
+        try {
+            switch (msgIn.readUTF()) {
+                case "IncrementGoal" -> {
+                    String poolId = msgIn.readUTF();
+                    String goalId = msgIn.readUTF();
+                    int increment = msgIn.readShort();
+
+                    ItemPool itemPool = ItemPools.getInstance().getItemPoolManager().getItemPool(poolId);
+                    if (itemPool == null) {
+                        return;
+                    }
+
+                    GoalCollection goals = itemPool.getGoalCollection();
+                    if (goals == null) {
+                        return;
+                    }
+
+                    Goal goal = goals.get(goalId);
+                    if (goal != null) {
+                        goal.increaseValue(increment);
+                        if (goal.isCompletable()) {
+                            goal.complete();
+                        }
+                    }
+                }
+                case "" -> {}
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

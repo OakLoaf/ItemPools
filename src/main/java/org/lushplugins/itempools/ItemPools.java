@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.lushplugins.itempools.command.ItemPoolsCommand;
 import org.lushplugins.itempools.config.GoalProviderConfigManager;
 import org.lushplugins.itempools.config.ItemPoolConfigManager;
@@ -23,6 +24,7 @@ import org.lushplugins.lushlib.plugin.SpigotPlugin;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 public final class ItemPools extends SpigotPlugin {
     private static final Gson GSON;
@@ -67,7 +69,19 @@ public final class ItemPools extends SpigotPlugin {
         LushLib.getInstance().disable();
     }
 
-    public void sendUpdatePluginMessage(String poolId) {
+    public void sendGoalIncrementPluginMessage(String poolId, String goalId, int increment) {
+        sendItemPoolsPluginMessage("IncrementGoal", msgOut -> {
+            try {
+                msgOut.writeUTF(poolId);
+                msgOut.writeUTF(goalId);
+                msgOut.writeShort(increment);
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void sendItemPoolsPluginMessage(@NotNull String messageType, Consumer<DataOutputStream> msgOutConsumer) {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Forward");
         out.writeUTF("ALL");
@@ -76,7 +90,8 @@ public final class ItemPools extends SpigotPlugin {
         ByteArrayOutputStream msgBytes = new ByteArrayOutputStream();
         DataOutputStream msgOut = new DataOutputStream(msgBytes);
         try {
-            msgOut.writeUTF(poolId);
+            msgOut.writeUTF(messageType);
+            msgOutConsumer.accept(msgOut);
         } catch (IOException exception){
             exception.printStackTrace();
         }
