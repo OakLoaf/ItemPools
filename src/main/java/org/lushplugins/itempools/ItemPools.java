@@ -1,5 +1,7 @@
 package org.lushplugins.itempools;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.lushplugins.itempools.command.ItemPoolsCommand;
 import org.lushplugins.itempools.config.GoalProviderConfigManager;
 import org.lushplugins.itempools.config.ItemPoolConfigManager;
@@ -12,7 +14,14 @@ import org.lushplugins.lushlib.hook.Hook;
 import org.lushplugins.lushlib.plugin.SpigotPlugin;
 
 public final class ItemPools extends SpigotPlugin {
+    private static final Gson GSON;
     private static ItemPools plugin;
+
+    static {
+        GSON = new GsonBuilder()
+            .setPrettyPrinting()
+            .create();
+    }
 
     @Override
     public void onLoad() {
@@ -44,6 +53,10 @@ public final class ItemPools extends SpigotPlugin {
         unregisterAllHooks();
         unregisterAllModules();
         LushLib.getInstance().disable();
+    }
+
+    public static Gson getGson() {
+        return GSON;
     }
 
     public static ItemPools getInstance() {

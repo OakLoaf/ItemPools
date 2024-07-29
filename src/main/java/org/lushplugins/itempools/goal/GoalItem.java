@@ -1,5 +1,8 @@
 package org.lushplugins.itempools.goal;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.lushplugins.lushlib.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -57,6 +60,26 @@ public class GoalItem {
         configurationSection.set("meta.lore", lore);
         configurationSection.set("meta.custom-model-data", customModelData);
         configurationSection.set("meta.enchanted", enchanted);
+    }
+
+    public JsonElement toJson() {
+        JsonObject json = new JsonObject();
+
+        json.addProperty("type", material.getKey().toString());
+        json.addProperty("meta.display-name", displayName);
+
+        if (lore != null) {
+            JsonArray loreJson = new JsonArray();
+            for (String loreLine : lore) {
+                loreJson.add(loreLine);
+            }
+            json.add("meta.lore", loreJson);
+        }
+
+        json.addProperty("meta.custom-model-data", customModelData);
+        json.addProperty("meta.enchanted", enchanted);
+
+        return json;
     }
 
     @Nullable

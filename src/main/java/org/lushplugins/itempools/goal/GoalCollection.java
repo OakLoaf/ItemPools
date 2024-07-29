@@ -1,5 +1,8 @@
 package org.lushplugins.itempools.goal;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -7,9 +10,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class GoalCollection implements Iterable<Goal> {
     private final ConcurrentHashMap<GoalItem, Goal> goals;
+
+    public GoalCollection(Collection<Goal> goals) {
+        this.goals = new ConcurrentHashMap<>(goals.stream().collect(Collectors.toMap(Goal::getGoalItem, Function.identity())));
+    }
 
     public GoalCollection() {
         this.goals = new ConcurrentHashMap<>();
@@ -97,4 +106,35 @@ public class GoalCollection implements Iterable<Goal> {
     public Iterator<Goal> iterator() {
         return goals.values().iterator();
     }
+
+    public JsonElement toJson() {
+        JsonArray goalsJson = new JsonArray();
+
+        for (Goal goal : goals.values()) {
+            JsonObject goalJson = new JsonObject();
+
+            goalJson.addProperty("goal-id", goal.getId());
+            goalJson.add("item", goal.getGoalItem().toJson());
+            goalJson.addProperty("display-name", goal.getDisplayName());
+            goalJson.addProperty("current", goal.getValue());
+            goalJson.addProperty("goal", goal.getGoal());
+            goalJson.addProperty("completed", goal.hasCompleted());
+
+            goalsJson.add(goalJson);
+        }
+
+        return goalsJson;
+    }
+    
+//    TODO
+//    public static GoalCollection fromJson(JsonElement json) {
+//        JsonArray goalsJson = json.getAsJsonArray();
+//
+//        for (JsonElement goalJsonRaw : goalsJson) {
+//            JsonObject goalJson = goalJsonRaw.getAsJsonObject();
+//
+//            new Goal.Builder(goalJson.get("goal-id").getAsString())
+//                .setGoalItem()
+//        }
+//    }
 }
