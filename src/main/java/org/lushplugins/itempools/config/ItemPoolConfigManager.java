@@ -117,7 +117,7 @@ public class ItemPoolConfigManager extends Manager {
                     try {
                         if (itemPoolData != null) {
                             GoalCollection loadedGoals = itemPoolData.goals();
-                            loadedGoals.forEach(goal -> goal.setCompletionCommands(loadedGoals.get(goal.getGoalItem()).getCompletionCommands()));
+                            loadedGoals.forEach(goal -> goal.setCompletionCommands(loadedGoals.get(goal.getGoalItem()).getCompletionCommands())); // TODO: Check if needed
                             builder
                                 .setGoals(loadedGoals)
                                 .setCompleted(itemPoolData.completed());
