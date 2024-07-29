@@ -1,7 +1,6 @@
 package org.lushplugins.itempools.pool;
 
 import org.lushplugins.itempools.ItemPools;
-import org.lushplugins.itempools.config.ItemPoolConfigManager;
 import org.lushplugins.itempools.goal.Goal;
 import org.lushplugins.lushlib.manager.Manager;
 import org.bukkit.Bukkit;
@@ -25,7 +24,7 @@ public class ItemPoolManager extends Manager {
     @Override
     public void onEnable() {
         itemPools = new ConcurrentHashMap<>();
-        poolHeartbeat = Bukkit.getScheduler().runTaskTimer(ItemPools.getInstance(), () -> ItemPools.getInstance().getManager(ItemPoolConfigManager.class).ifPresent(itemPoolManager -> {
+        poolHeartbeat = Bukkit.getScheduler().runTaskTimer(ItemPools.getInstance(), () -> {
             itemPools.values().forEach(itemPool -> {
                 if (itemPool.hasCompleted()) {
                     return;
@@ -68,7 +67,7 @@ public class ItemPoolManager extends Manager {
                     }
                 });
             });
-        }),1, 5);
+        },1, 5);
     }
 
     @Override

@@ -47,36 +47,32 @@ public class PlaceholderAPIHook extends Hook {
             String itemRaw = paramArgs[1];
             String[] poolArgs = Arrays.copyOfRange(paramArgs, 2, paramArgs.length);
 
-            Optional<ItemPoolManager> optionalManager = ItemPools.getInstance().getManager(ItemPoolManager.class);
-            if (optionalManager.isPresent()) {
-                ItemPoolManager itemPoolManager = optionalManager.get();
-                ItemPool itemPool = itemPoolManager.getItemPool(poolName);
-                if (itemPool == null) {
-                    return "Invalid ItemPool";
-                }
+            ItemPool itemPool = ItemPools.getInstance().getItemPoolManager().getItemPool(poolName);
+            if (itemPool == null) {
+                return "Invalid ItemPool";
+            }
 
-                GoalCollection goalCollection = itemPool.getGoalCollection();
-                Goal goal;
-                try {
-                    goal = goalCollection.get(new ItemStack(Material.valueOf(itemRaw.toUpperCase())));
-                } catch (IllegalArgumentException e) {
-                    return "Invalid Goal";
-                }
+            GoalCollection goalCollection = itemPool.getGoalCollection();
+            Goal goal;
+            try {
+                goal = goalCollection.get(new ItemStack(Material.valueOf(itemRaw.toUpperCase())));
+            } catch (IllegalArgumentException e) {
+                return "Invalid Goal";
+            }
 
-                if (goal == null) {
-                    return "Invalid Goal";
-                }
+            if (goal == null) {
+                return "Invalid Goal";
+            }
 
-                switch (poolArgs[0].toLowerCase()) {
-                    case "current" -> {
-                        return String.valueOf(goal.getValue());
-                    }
-                    case "remaining" -> {
-                        return String.valueOf(goal.getAmountRemaining());
-                    }
-                    case "goal" -> {
-                        return String.valueOf(goal.getGoal());
-                    }
+            switch (poolArgs[0].toLowerCase()) {
+                case "current" -> {
+                    return String.valueOf(goal.getValue());
+                }
+                case "remaining" -> {
+                    return String.valueOf(goal.getAmountRemaining());
+                }
+                case "goal" -> {
+                    return String.valueOf(goal.getGoal());
                 }
             }
 

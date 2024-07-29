@@ -11,6 +11,7 @@ import org.lushplugins.itempools.hook.PlaceholderAPIHook;
 import org.lushplugins.itempools.pool.ItemPoolManager;
 import org.lushplugins.lushlib.LushLib;
 import org.lushplugins.lushlib.hook.Hook;
+import org.lushplugins.lushlib.manager.Manager;
 import org.lushplugins.lushlib.plugin.SpigotPlugin;
 
 public final class ItemPools extends SpigotPlugin {
@@ -47,12 +48,31 @@ public final class ItemPools extends SpigotPlugin {
 
     @Override
     public void onDisable() {
-        getManager(ItemPoolManager.class).ifPresent(manager -> getManager(ItemPoolDataManager.class)
-            .ifPresent(dataManager -> manager.getItemPools().forEach(dataManager::savePoolData)));
+        getItemPoolManager().getItemPools().forEach(getItemPoolDataManager()::savePoolData);
 
         unregisterAllHooks();
         unregisterAllModules();
         LushLib.getInstance().disable();
+    }
+
+    public GoalProviderConfigManager getGoalProviderConfigManager() {
+        return getNullableManager(GoalProviderConfigManager.class);
+    }
+
+    public ItemPoolManager getItemPoolManager() {
+        return getNullableManager(ItemPoolManager.class);
+    }
+
+    public ItemPoolConfigManager getItemPoolConfigManager() {
+        return getNullableManager(ItemPoolConfigManager.class);
+    }
+
+    public ItemPoolDataManager getItemPoolDataManager() {
+        return getNullableManager(ItemPoolDataManager.class);
+    }
+
+    private <T extends Manager> T getNullableManager(Class<T> clazz) {
+        return getManager(clazz).orElse(null);
     }
 
     public static Gson getGson() {

@@ -2,7 +2,6 @@ package org.lushplugins.itempools.config;
 
 import com.mojang.datafixers.util.Pair;
 import org.lushplugins.itempools.ItemPools;
-import org.lushplugins.itempools.data.ItemPoolDataManager;
 import org.lushplugins.itempools.goal.Goal;
 import org.lushplugins.itempools.goal.GoalItem;
 import org.lushplugins.itempools.goal.GoalProvider;
@@ -28,12 +27,13 @@ public class ItemPoolConfigManager extends Manager {
         ItemPools.getInstance().saveDefaultResource("item-pools.yml");
         FileConfiguration regionsConfig = ItemPools.getInstance().getConfigResource("item-pools.yml");
 
-        ItemPoolManager itemPoolManager = ItemPools.getInstance().getManager(ItemPoolManager.class).orElse(null);
-        GoalProviderConfigManager providerManager = ItemPools.getInstance().getManager(GoalProviderConfigManager.class).orElse(null);
+        ItemPoolManager itemPoolManager = ItemPools.getInstance().getItemPoolManager();
+        GoalProviderConfigManager providerManager = ItemPools.getInstance().getGoalProviderConfigManager();
         if (itemPoolManager == null || providerManager == null) {
             ItemPools.getInstance().getLogger().severe("ItemPoolManager or ProviderManager has not correctly loaded - please report this");
             return;
         }
+
         itemPoolManager.removeAllItemPools();
         providerManager.reload();
 
@@ -113,23 +113,21 @@ public class ItemPoolConfigManager extends Manager {
                     .setGoals(goals)
                     .setCompletionCommands(poolCompletionCommands);
 
-                ItemPools.getInstance().getManager(ItemPoolDataManager.class).ifPresentOrElse(
-                    poolDataManager -> poolDataManager.loadPoolData(poolId).thenAccept(itemPoolData -> {
-                        try {
-                            if (itemPoolData != null) {
-                                GoalCollection loadedGoals = itemPoolData.goals();
-                                loadedGoals.forEach(goal -> goal.setCompletionCommands(loadedGoals.get(goal.getGoalItem()).getCompletionCommands()));
-                                builder
-                                    .setGoals(loadedGoals)
-                                    .setCompleted(itemPoolData.completed());
-                            }
-
-                            itemPoolManager.addItemPool(builder.build());
-                        } catch (Throwable e) {
-                            e.printStackTrace();
+                ItemPools.getInstance().getItemPoolDataManager().loadPoolData(poolId).thenAccept(itemPoolData -> {
+                    try {
+                        if (itemPoolData != null) {
+                            GoalCollection loadedGoals = itemPoolData.goals();
+                            loadedGoals.forEach(goal -> goal.setCompletionCommands(loadedGoals.get(goal.getGoalItem()).getCompletionCommands()));
+                            builder
+                                .setGoals(loadedGoals)
+                                .setCompleted(itemPoolData.completed());
                         }
-                    }),
-                    () -> itemPoolManager.addItemPool(builder.build()));
+
+                        itemPoolManager.addItemPool(builder.build());
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
+                });
             });
         }
     }

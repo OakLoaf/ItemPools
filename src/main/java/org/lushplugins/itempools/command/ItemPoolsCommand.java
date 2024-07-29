@@ -82,7 +82,7 @@ public class ItemPoolsCommand extends Command {
                 return true;
             }
 
-            ItemPools.getInstance().getManager(ItemPoolConfigManager.class).ifPresent(ItemPoolConfigManager::reload);
+            ItemPools.getInstance().getItemPoolConfigManager().reload();
             ChatColorHandler.sendMessage(sender, "&aReloaded ItemPools");
             return true;
         }
@@ -107,14 +107,7 @@ public class ItemPoolsCommand extends Command {
             }
 
             String poolId = args[0];
-            Optional<ItemPoolManager> optionalManager = ItemPools.getInstance().getManager(ItemPoolManager.class);
-            if (optionalManager.isEmpty()) {
-                ChatColorHandler.sendMessage(sender, "&cIncorrect usage, try: /itempools reset <pool>");
-                return  true;
-            }
-
-            ItemPoolManager itemPoolManager = optionalManager.get();
-            ItemPool itemPool = itemPoolManager.getItemPool(poolId);
+            ItemPool itemPool = ItemPools.getInstance().getItemPoolManager().getItemPool(poolId);
             if (itemPool == null) {
                 ChatColorHandler.sendMessage(sender, "&cThat is not a valid item pool");
                 return  true;
@@ -127,13 +120,7 @@ public class ItemPoolsCommand extends Command {
 
         @Override
         public @Nullable List<String> tabComplete(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args, @NotNull String[] fullArgs) {
-            Optional<ItemPoolManager> optionalManager = ItemPools.getInstance().getManager(ItemPoolManager.class);
-            if (optionalManager.isPresent()) {
-                ItemPoolManager itemPoolManager = optionalManager.get();
-                return itemPoolManager.getItemPools().stream().map(ItemPool::getId).toList();
-            }
-
-            return null;
+            return ItemPools.getInstance().getItemPoolManager().getItemPools().stream().map(ItemPool::getId).toList();
         }
     }
 }

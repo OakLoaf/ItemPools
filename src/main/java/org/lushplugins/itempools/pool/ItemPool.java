@@ -14,7 +14,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ItemPool {
     private final String id;
@@ -52,9 +51,8 @@ public class ItemPool {
     public void reset() {
         goals.clear();
 
-        Optional<GoalProviderConfigManager> optionalManager = ItemPools.getInstance().getManager(GoalProviderConfigManager.class);
-        if (optionalManager.isPresent() && goalProviders != null) {
-            GoalProviderConfigManager goalProviderManager = optionalManager.get();
+        GoalProviderConfigManager goalProviderManager = ItemPools.getInstance().getGoalProviderConfigManager();
+        if (goalProviders != null) {
             goalProviders.forEach((providerData) -> {
                 String providerName = providerData.getFirst();
                 int amount = providerData.getSecond();

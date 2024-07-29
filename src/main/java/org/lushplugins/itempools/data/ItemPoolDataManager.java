@@ -31,22 +31,22 @@ public class ItemPoolDataManager extends Manager {
 
         switch (storageType.toLowerCase()) {
             case "mysql", "mariadb" -> {
-                String host = config.getString("host");
-                int port = config.getInt("port");
-                String databaseName = config.getString("database-name");
-                String username = config.getString("username");
-                String password = config.getString("password");
+                String host = config.getString("mysql.host");
+                int port = config.getInt("mysql.port");
+                String databaseName = config.getString("mysql.database-name");
+                String username = config.getString("mysql.username");
+                String password = config.getString("mysql.password");
 
                 storage = new SQLStorage(host, port, databaseName, username, password);
             }
             case "yml" -> storage = new YmlStorage();
             default -> {
-                ItemPools.getInstance().getLogger().severe("Invalid storage type '" + storageType + "' defined.");
+                ItemPools.getInstance().getLogger().severe("Invalid storage type '" + storageType + "' defined");
                 return;
             }
         }
 
-        ItemPools.getInstance().getLogger().severe("Successfully loaded '" + storageType + "' defined.");
+        ItemPools.getInstance().getLogger().info("Successfully loaded '" + storageType + "' storage");
     }
 
     public CompletableFuture<ItemPoolGoalData> loadPoolData(String poolId) {
