@@ -7,11 +7,14 @@ import org.lushplugins.itempools.ItemPools;
 import org.lushplugins.itempools.data.ItemPoolGoalData;
 import org.lushplugins.itempools.goal.GoalCollection;
 
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /*
  * Tables:
@@ -22,12 +25,14 @@ public class SQLStorage implements Storage {
 
     public SQLStorage(String host, int port, String databaseName, String user, String password) {
         this.source = initDataSource(host, port, databaseName, user, password);
+        setupDatabase("storage" + File.separator + "mysql_setup.sql");
     }
 
     @Override
     public ItemPoolGoalData loadPoolData(String poolId) {
         try (Connection conn = conn(); PreparedStatement stmt = conn.prepareStatement(
-            "SELECT * FROM pool_data WHERE id = ?;")) {
+            "SELECT * FROM pool_data WHERE id = ?;"
+        )) {
             stmt.setString(1, poolId);
 
             ResultSet result = stmt.executeQuery();
@@ -56,7 +61,8 @@ public class SQLStorage implements Storage {
     @Override
     public void savePoolData(ItemPoolGoalData itemPoolData) {
         try (Connection conn = conn(); PreparedStatement stmt = conn.prepareStatement(
-            "REPLACE INTO pool_data (id, goals, completed) VALUES (?, ?, ?);")) {
+            "REPLACE INTO pool_data (id, goals, completed) VALUES (?, ?, ?);"
+        )) {
             stmt.setString(1, itemPoolData.id());
 //            stmt.setString(2, itemPoolData.goals().toJson().toString());
             stmt.setString(2, ItemPools.getGson().toJson(itemPoolData.goals())); // TODO: Test
@@ -66,6 +72,28 @@ public class SQLStorage implements Storage {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    protected void setupDatabase(String fileName) {
+        String setup;
+        try (InputStream in = SQLStorage.class.getClassLoader().getResourceAsStream(fileName)) {
+            setup = new BufferedReader(new InputStreamReader(in)).lines().collect(Collectors.joining(""));
+        } catch (IOException e) {
+            ItemPools.getInstance().getLogger().log(Level.SEVERE, "Could not read db setup file.", e);
+            e.printStackTrace();
+            return;
+        }
+
+        String[] statements = setup.split("\\|");
+        for (String statement : statements) {
+            try (Connection conn = source.getConnection(); PreparedStatement stmt = conn.prepareStatement(statement)) {
+                stmt.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        ItemPools.getInstance().getLogger().info("Database setup complete.");
     }
 
     protected HikariDataSource initDataSource(String host, int port, String databaseName, String user, String password) {
