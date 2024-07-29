@@ -50,6 +50,11 @@ public class ItemPoolDataManager extends Manager {
         ItemPools.getInstance().getLogger().info("Successfully loaded '" + storageType + "' storage");
     }
 
+    @Override
+    public void onDisable() {
+        threads.shutdown();
+    }
+
     public CompletableFuture<Void> updateGoalData(String poolId) {
         return loadPoolData(poolId).thenAccept(poolData -> {
             ItemPool itemPool = ItemPools.getInstance().getItemPoolManager().getItemPool(poolId);

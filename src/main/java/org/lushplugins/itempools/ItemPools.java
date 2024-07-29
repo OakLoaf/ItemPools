@@ -69,6 +69,7 @@ public final class ItemPools extends SpigotPlugin {
         for (ItemPool pool : getItemPoolManager().getItemPools()) {
             dataManager.savePoolData(pool);
         }
+        unregisterManager(ItemPoolDataManager.class);
 
         this.getServer().getMessenger().unregisterIncomingPluginChannel(this);
 
