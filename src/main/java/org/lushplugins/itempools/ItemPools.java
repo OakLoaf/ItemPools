@@ -16,6 +16,7 @@ import org.lushplugins.itempools.data.ItemPoolDataManager;
 import org.lushplugins.itempools.hook.FancyHologramsHook;
 import org.lushplugins.itempools.hook.PlaceholderAPIHook;
 import org.lushplugins.itempools.listener.PluginMessageListener;
+import org.lushplugins.itempools.pool.ItemPool;
 import org.lushplugins.itempools.pool.ItemPoolManager;
 import org.lushplugins.lushlib.LushLib;
 import org.lushplugins.lushlib.hook.Hook;
@@ -64,6 +65,11 @@ public final class ItemPools extends SpigotPlugin {
 
     @Override
     public void onDisable() {
+        ItemPoolDataManager dataManager = getItemPoolDataManager();
+        for (ItemPool pool : getItemPoolManager().getItemPools()) {
+            dataManager.savePoolData(pool);
+        }
+
         this.getServer().getMessenger().unregisterIncomingPluginChannel(this);
 
         unregisterAllHooks();

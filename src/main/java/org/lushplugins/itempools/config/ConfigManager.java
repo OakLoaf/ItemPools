@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitTask;
 import org.lushplugins.itempools.ItemPools;
+import org.lushplugins.itempools.data.ItemPoolDataManager;
 import org.lushplugins.itempools.pool.ItemPool;
 import org.lushplugins.lushlib.manager.Manager;
 
@@ -25,8 +26,9 @@ public class ConfigManager extends Manager {
         if (saveRate > 0) {
             long saveRateInTicks = saveRate * 120L;
             saveTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+                ItemPoolDataManager dataManager = plugin.getItemPoolDataManager();
                 for (ItemPool pool : plugin.getItemPoolManager().getItemPools()) {
-                    plugin.getItemPoolDataManager().savePoolData(pool);
+                    dataManager.savePoolData(pool);
                 }
             }, saveRateInTicks, saveRateInTicks);
         }
