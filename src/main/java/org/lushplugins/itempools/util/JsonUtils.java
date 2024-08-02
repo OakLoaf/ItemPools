@@ -12,24 +12,24 @@ public class JsonUtils {
 
     public static String getStringOrNull(JsonObject jsonObject, String path) {
         JsonElement element = jsonObject.get(path);
-        return !element.isJsonNull() ? element.getAsString() : null;
+        return (element != null && !element.isJsonNull()) ? element.getAsString() : null;
     }
 
     public static Integer getIntOrNull(JsonObject jsonObject, String path) {
         JsonElement element = jsonObject.get(path);
-        return !element.isJsonNull() ? element.getAsInt() : null;
+        return (element != null && !element.isJsonNull()) ? element.getAsInt() : null;
     }
 
     public static Boolean getBoolOrNull(JsonObject jsonObject, String path) {
         JsonElement element = jsonObject.get(path);
-        return !element.isJsonNull() ? element.getAsBoolean() : null;
+        return (element != null && !element.isJsonNull()) ? element.getAsBoolean() : null;
     }
 
     public static List<String> getStringListOrNull(JsonObject jsonObject, String path) {
         JsonElement element = jsonObject.get(path);
 
         List<String> list;
-        if (element.isJsonArray()) {
+        if (element != null && element.isJsonArray()) {
             JsonArray jsonArr = element.getAsJsonArray();
             list = new ArrayList<>();
 
