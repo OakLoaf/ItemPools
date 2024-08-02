@@ -116,13 +116,15 @@ public class GoalItem {
 
         String displayName = JsonUtils.getStringOrNull(json, "meta.display-name");
 
-        List<String> lore = new ArrayList<>();
-        JsonArray loreJson = json.get("meta.lore").getAsJsonArray();
-        for (JsonElement loreElement : loreJson) {
-            lore.add(loreElement.getAsString());
-        }
+        List<String> lore;
+        if (json.has("meta.lore")) {
+            lore = new ArrayList<>();
 
-        if (lore.isEmpty()) {
+            JsonArray loreJson = json.get("meta.lore").getAsJsonArray();
+            for (JsonElement loreElement : loreJson) {
+                lore.add(loreElement.getAsString());
+            }
+        } else {
             lore = null;
         }
 
