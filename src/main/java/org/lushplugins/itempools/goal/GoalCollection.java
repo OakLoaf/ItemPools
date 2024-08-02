@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lushplugins.itempools.ItemPools;
+import org.lushplugins.itempools.util.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -150,7 +151,7 @@ public class GoalCollection implements Iterable<Goal> {
 
             Goal goal = new Goal.Builder(goalJson.get("goal-id").getAsString())
                 .setGoalItem(GoalItem.fromJson(goalJson.getAsJsonObject("item")))
-                .setDisplayName(goalJson.get("display-name").getAsString())
+                .setDisplayName(JsonUtils.getStringOrNull(goalJson, "display-name"))
                 .setValue(goalJson.get("current").getAsInt())
                 .setGoal(goalJson.get("goal").getAsInt())
                 .setCompleted(goalJson.get("completed").getAsBoolean())

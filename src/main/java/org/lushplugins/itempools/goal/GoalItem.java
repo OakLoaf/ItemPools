@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.bukkit.Registry;
+import org.lushplugins.itempools.util.JsonUtils;
 import org.lushplugins.lushlib.utils.RegistryUtils;
 import org.lushplugins.lushlib.utils.StringUtils;
 import org.bukkit.Material;
@@ -113,7 +114,7 @@ public class GoalItem {
             throw new IllegalArgumentException("Found invalid material type '" + materialRaw + "'");
         }
 
-        String displayName = json.get("meta.display-name").getAsString();
+        String displayName = JsonUtils.getStringOrNull(json, "meta.display-name");
 
         List<String> lore = new ArrayList<>();
         JsonArray loreJson = json.get("meta.lore").getAsJsonArray();
@@ -125,8 +126,8 @@ public class GoalItem {
             lore = null;
         }
 
-        int customModelData = json.get("meta.custom-model-data").getAsInt();
-        boolean enchanted = json.get("meta.custom-model-data").getAsBoolean();
+        Integer customModelData = JsonUtils.getIntOrNull(json, "meta.custom-model-data");
+        Boolean enchanted = JsonUtils.getBoolOrNull(json, "meta.enchanted");
 
         return new GoalItem(material, displayName, lore, customModelData, enchanted);
     }
