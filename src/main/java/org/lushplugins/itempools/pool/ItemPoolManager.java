@@ -65,10 +65,7 @@ public class ItemPoolManager extends Manager {
                             goal.complete();
                         }
 
-                        ItemPools plugin = ItemPools.getInstance();
-                        plugin.getItemPoolDataManager().savePoolData(itemPool).thenAccept((ignored) -> {
-                            plugin.sendGoalIncrementPluginMessage(itemPool.getId(), goal.getId(), increase);
-                        });
+                        ItemPools.getInstance().sendGoalIncrementPluginMessage(itemPool.getId(), goal.getId(), increase);
                     }
                 });
             });
