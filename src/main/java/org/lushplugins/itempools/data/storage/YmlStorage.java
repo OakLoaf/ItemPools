@@ -74,4 +74,9 @@ public class YmlStorage implements Storage {
             err.printStackTrace();
         }
     }
+
+    @Override
+    public void deletePoolData(String poolId) {
+        // TODO;
+    }
 }

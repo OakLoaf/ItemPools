@@ -3,6 +3,8 @@ package org.lushplugins.itempools.goal;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.bukkit.Registry;
+import org.lushplugins.lushlib.utils.RegistryUtils;
 import org.lushplugins.lushlib.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -11,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GoalItem {
@@ -99,6 +102,31 @@ public class GoalItem {
         List<String> lore = metaSection.contains("lore") ? metaSection.getStringList("lore") : null;
         Integer customModelData = metaSection.contains("custom-model-data") ? metaSection.getInt("custom-model-data") : null;
         Boolean enchanted = metaSection.contains("enchanted") ? metaSection.getBoolean("enchanted") : null;
+
+        return new GoalItem(material, displayName, lore, customModelData, enchanted);
+    }
+
+    public static GoalItem fromJson(JsonObject json) {
+        String materialRaw = json.get("type").getAsString();
+        Material material = RegistryUtils.fromString(Registry.MATERIAL, materialRaw);
+        if (material == null) {
+            throw new IllegalArgumentException("Found invalid material type '" + materialRaw + "'");
+        }
+
+        String displayName = json.get("meta.display-name").getAsString();
+
+        List<String> lore = new ArrayList<>();
+        JsonArray loreJson = json.get("meta.lore").getAsJsonArray();
+        for (JsonElement loreElement : loreJson) {
+            lore.add(loreElement.getAsString());
+        }
+
+        if (lore.isEmpty()) {
+            lore = null;
+        }
+
+        int customModelData = json.get("meta.custom-model-data").getAsInt();
+        boolean enchanted = json.get("meta.custom-model-data").getAsBoolean();
 
         return new GoalItem(material, displayName, lore, customModelData, enchanted);
     }

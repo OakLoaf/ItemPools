@@ -7,4 +7,6 @@ public interface Storage {
     ItemPoolGoalData loadPoolData(String poolId);
 
     void savePoolData(ItemPoolGoalData itemPoolData);
+
+    void deletePoolData(String poolId);
 }

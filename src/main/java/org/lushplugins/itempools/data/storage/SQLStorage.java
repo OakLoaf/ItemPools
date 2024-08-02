@@ -42,9 +42,8 @@ public class SQLStorage implements Storage {
 
                 GoalCollection goals;
                 if (goalsRaw != null) {
-//                    JsonParser.parseString(goalsRaw)
-
-                    goals = ItemPools.getGson().fromJson(JsonParser.parseString(goalsRaw), GoalCollection.class);
+                    goals = GoalCollection.fromJson(JsonParser.parseString(goalsRaw));
+//                    goals = ItemPools.getGson().fromJson(JsonParser.parseString(goalsRaw), GoalCollection.class);
                 } else {
                     goals = new GoalCollection();
                 }
@@ -64,9 +63,22 @@ public class SQLStorage implements Storage {
             "REPLACE INTO pool_data (id, goals, completed) VALUES (?, ?, ?);"
         )) {
             stmt.setString(1, itemPoolData.id());
-//            stmt.setString(2, itemPoolData.goals().toJson().toString());
-            stmt.setString(2, ItemPools.getGson().toJson(itemPoolData.goals())); // TODO: Test
+            stmt.setString(2, itemPoolData.goals().toJson().toString());
+//            stmt.setString(2, ItemPools.getGson().toJson(itemPoolData.goals())); // TODO: Test
             stmt.setBoolean(3, itemPoolData.completed());
+
+            stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deletePoolData(String poolId) {
+        try (Connection conn = conn(); PreparedStatement stmt = conn.prepareStatement(
+            "DELETE FROM pool_data WHERE id = ?;"
+        )) {
+            stmt.setString(1, poolId);
 
             stmt.execute();
         } catch (SQLException e) {

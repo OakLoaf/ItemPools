@@ -1,14 +1,18 @@
 package org.lushplugins.itempools.goal;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lushplugins.itempools.ItemPools;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -129,22 +133,33 @@ public class GoalCollection implements Iterable<Goal> {
             goalJson.addProperty("current", goal.getValue());
             goalJson.addProperty("goal", goal.getGoal());
             goalJson.addProperty("completed", goal.hasCompleted());
+            goalJson.addProperty("completion-commands", ItemPools.getGson().toJson(goal.getCompletionCommands()));
 
             goalsJson.add(goalJson);
         }
 
         return goalsJson;
     }
-    
-//    TODO
-//    public static GoalCollection fromJson(JsonElement json) {
-//        JsonArray goalsJson = json.getAsJsonArray();
-//
-//        for (JsonElement goalJsonRaw : goalsJson) {
-//            JsonObject goalJson = goalJsonRaw.getAsJsonObject();
-//
-//            new Goal.Builder(goalJson.get("goal-id").getAsString())
-//                .setGoalItem()
-//        }
-//    }
+
+    public static GoalCollection fromJson(JsonElement json) {
+        JsonArray goalsJson = json.getAsJsonArray();
+
+        List<Goal> goals = new ArrayList<>();
+        for (JsonElement goalJsonRaw : goalsJson) {
+            JsonObject goalJson = goalJsonRaw.getAsJsonObject();
+
+            Goal goal = new Goal.Builder(goalJson.get("goal-id").getAsString())
+                .setGoalItem(GoalItem.fromJson(goalJson.getAsJsonObject("item")))
+                .setDisplayName(goalJson.get("display-name").getAsString())
+                .setValue(goalJson.get("current").getAsInt())
+                .setGoal(goalJson.get("goal").getAsInt())
+                .setCompleted(goalJson.get("completed").getAsBoolean())
+                .setCompletionCommands(ItemPools.getGson().fromJson(goalJson.get("completion-commands"), new TypeToken<List<String>>(){}.getType()))
+                .build();
+
+            goals.add(goal);
+        }
+
+        return new GoalCollection(goals);
+    }
 }

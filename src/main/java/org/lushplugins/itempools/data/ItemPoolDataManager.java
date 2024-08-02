@@ -84,6 +84,10 @@ public class ItemPoolDataManager extends Manager {
         return runAsync(() -> storage.savePoolData(itemPoolData));
     }
 
+    public CompletableFuture<Void> deletePoolData(String poolId) {
+        return runAsync(() -> storage.deletePoolData(poolId));
+    }
+
     private <T> CompletableFuture<T> runAsync(Callable<T> callable) {
         CompletableFuture<T> future = new CompletableFuture<>();
         threads.submit(() -> {

@@ -1,9 +1,7 @@
 package org.lushplugins.itempools.command;
 
 import org.lushplugins.itempools.ItemPools;
-import org.lushplugins.itempools.config.ItemPoolConfigManager;
 import org.lushplugins.itempools.pool.ItemPool;
-import org.lushplugins.itempools.pool.ItemPoolManager;
 import org.lushplugins.lushlib.command.Command;
 import org.lushplugins.lushlib.command.SubCommand;
 import org.lushplugins.lushlib.libraries.chatcolor.ChatColorHandler;
@@ -12,13 +10,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
 public class ItemPoolsCommand extends Command {
 
     public ItemPoolsCommand() {
         super("itempools");
         addSubCommand(new CreateSubCommand());
+        addSubCommand(new DeleteSubCommand());
         addSubCommand(new EditSubCommand());
         addSubCommand(new ReloadSubCommand());
         addSubCommand(new ResetSubCommand());
@@ -51,6 +49,31 @@ public class ItemPoolsCommand extends Command {
             return true;
         }
     }
+
+    private static class DeleteSubCommand extends SubCommand {
+
+        public DeleteSubCommand() {
+            super("delete");
+        }
+
+        @Override
+        public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args, @NotNull String[] fullArgs) {
+            if (!sender.hasPermission("itempools.delete")) {
+                ChatColorHandler.sendMessage(sender, "&cIncorrect permissions.");
+                return true;
+            }
+
+            if (args.length < 1) {
+                ChatColorHandler.sendMessage(sender, "&cIncorrect arguments, try /itempools delete <pool_id>");
+                return true;
+            }
+
+            ItemPools.getInstance().getItemPoolDataManager().deletePoolData(args[0]);
+
+            return false;
+        }
+    }
+
 
     private static class EditSubCommand extends SubCommand {
 
