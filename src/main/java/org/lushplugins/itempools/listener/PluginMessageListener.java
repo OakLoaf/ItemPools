@@ -18,14 +18,12 @@ public class PluginMessageListener implements org.bukkit.plugin.messaging.Plugin
 
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte[] message) {
-        ItemPools.getInstance().log(Level.INFO, "Received plugin message on channel " + channel);
         if (!channel.equals("BungeeCord")) {
             return;
         }
 
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String subChannel = in.readUTF();
-        ItemPools.getInstance().log(Level.INFO, "Received plugin message on subchannel " + subChannel);
         if (!subChannel.equals("ItemPools")) {
             return;
         }
@@ -41,8 +39,6 @@ public class PluginMessageListener implements org.bukkit.plugin.messaging.Plugin
                     String poolId = msgIn.readUTF();
                     String goalId = msgIn.readUTF();
                     int increment = msgIn.readShort();
-
-                    ItemPools.getInstance().log(Level.INFO, "Received plugin message with data: " + poolId + ", " + goalId + ", " + increment);
 
                     ItemPool itemPool = ItemPools.getInstance().getItemPoolManager().getItemPool(poolId);
                     if (itemPool == null) {

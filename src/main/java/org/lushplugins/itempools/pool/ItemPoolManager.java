@@ -67,7 +67,6 @@ public class ItemPoolManager extends Manager {
                         }
 
                         ItemPools.getInstance().sendGoalIncrementPluginMessage(itemPool.getId(), goal.getId(), increase);
-                        ItemPools.getInstance().log(Level.INFO, "Sent goal increment plugin message");
                     }
                 });
             });
