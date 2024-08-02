@@ -59,6 +59,7 @@ public final class ItemPools extends SpigotPlugin {
         hooks.values().forEach(Hook::enable);
 
         new PluginMessageListener().register();
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
         registerCommand(new ItemPoolsCommand());
     }
@@ -76,6 +77,7 @@ public final class ItemPools extends SpigotPlugin {
         unregisterManager(ItemPoolDataManager.class);
 
         this.getServer().getMessenger().unregisterIncomingPluginChannel(this);
+        this.getServer().getMessenger().unregisterOutgoingPluginChannel(this);
 
         unregisterAllHooks();
         unregisterAllModules();

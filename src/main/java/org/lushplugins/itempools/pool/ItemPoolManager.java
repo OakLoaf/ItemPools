@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 public class ItemPoolManager extends Manager {
     /**
@@ -66,6 +67,7 @@ public class ItemPoolManager extends Manager {
                         }
 
                         ItemPools.getInstance().sendGoalIncrementPluginMessage(itemPool.getId(), goal.getId(), increase);
+                        ItemPools.getInstance().log(Level.INFO, "Sent goal increment plugin message");
                     }
                 });
             });
