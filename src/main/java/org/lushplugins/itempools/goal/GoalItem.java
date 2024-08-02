@@ -71,15 +71,7 @@ public class GoalItem {
 
         json.addProperty("type", material.getKey().toString());
         json.addProperty("meta.display-name", displayName);
-
-        if (lore != null) {
-            JsonArray loreJson = new JsonArray();
-            for (String loreLine : lore) {
-                loreJson.add(loreLine);
-            }
-            json.add("meta.lore", loreJson);
-        }
-
+        JsonUtils.setStringList(json, "meta.lore", lore);
         json.addProperty("meta.custom-model-data", customModelData);
         json.addProperty("meta.enchanted", enchanted);
 
@@ -115,19 +107,7 @@ public class GoalItem {
         }
 
         String displayName = JsonUtils.getStringOrNull(json, "meta.display-name");
-
-        List<String> lore;
-        if (json.has("meta.lore")) {
-            lore = new ArrayList<>();
-
-            JsonArray loreJson = json.get("meta.lore").getAsJsonArray();
-            for (JsonElement loreElement : loreJson) {
-                lore.add(loreElement.getAsString());
-            }
-        } else {
-            lore = null;
-        }
-
+        List<String> lore = JsonUtils.getStringListOrNull(json, "meta.lore");
         Integer customModelData = JsonUtils.getIntOrNull(json, "meta.custom-model-data");
         Boolean enchanted = JsonUtils.getBoolOrNull(json, "meta.enchanted");
 

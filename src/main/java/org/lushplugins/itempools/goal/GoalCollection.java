@@ -134,7 +134,7 @@ public class GoalCollection implements Iterable<Goal> {
             goalJson.addProperty("current", goal.getValue());
             goalJson.addProperty("goal", goal.getGoal());
             goalJson.addProperty("completed", goal.hasCompleted());
-            goalJson.addProperty("completion-commands", ItemPools.getGson().toJson(goal.getCompletionCommands()));
+            JsonUtils.setStringList(goalJson, "completion-commands", goal.getCompletionCommands());
 
             goalsJson.add(goalJson);
         }
@@ -155,7 +155,7 @@ public class GoalCollection implements Iterable<Goal> {
                 .setValue(goalJson.get("current").getAsInt())
                 .setGoal(goalJson.get("goal").getAsInt())
                 .setCompleted(goalJson.get("completed").getAsBoolean())
-                .setCompletionCommands(ItemPools.getGson().fromJson(goalJson.get("completion-commands"), new TypeToken<List<String>>(){}.getType()))
+                .setCompletionCommands(JsonUtils.getStringListOrNull(goalJson, "completion-commands"))
                 .build();
 
             goals.add(goal);
