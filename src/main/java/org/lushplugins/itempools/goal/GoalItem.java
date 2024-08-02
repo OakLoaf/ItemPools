@@ -1,6 +1,5 @@
 package org.lushplugins.itempools.goal;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.bukkit.Registry;
@@ -17,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoalItem {
+public class GoalItem implements Cloneable {
     private final Material material;
     private final String displayName;
     private final List<String> lore;
@@ -112,5 +111,15 @@ public class GoalItem {
         Boolean enchanted = JsonUtils.getBoolOrNull(json, "meta.enchanted");
 
         return new GoalItem(material, displayName, lore, customModelData, enchanted);
+    }
+
+    @Override
+    public GoalItem clone() {
+        return new GoalItem(
+            this.material,
+            this.displayName,
+            this.lore != null ? new ArrayList<>(this.lore) : null,
+            this.customModelData,
+            this.enchanted);
     }
 }

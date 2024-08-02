@@ -99,12 +99,14 @@ public class Goal implements Cloneable {
 
     @Override
     public Goal clone() {
-        try {
-            // TODO: copy mutable state here, so the clone can't change the internals of the original
-            return (Goal) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+        return new Goal(
+            this.id,
+            this.displayName,
+            this.goalItem.clone(),
+            this.goal,
+            this.value,
+            this.completed,
+            new ArrayList<>(this.completionCommands));
     }
 
     public static class Builder {
