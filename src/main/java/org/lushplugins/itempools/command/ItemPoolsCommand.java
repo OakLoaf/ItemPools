@@ -20,6 +20,7 @@ public class ItemPoolsCommand extends Command {
         addSubCommand(new EditSubCommand());
         addSubCommand(new ReloadSubCommand());
         addSubCommand(new ResetSubCommand());
+        addSubCommand(new SaveSubCommand());
     }
 
     @Override
@@ -70,7 +71,7 @@ public class ItemPoolsCommand extends Command {
 
             ItemPools.getInstance().getItemPoolDataManager().deletePoolData(args[0]);
 
-            return false;
+            return true;
         }
     }
 
@@ -139,6 +140,42 @@ public class ItemPoolsCommand extends Command {
 
             itemPool.reset();
             ChatColorHandler.sendMessage(sender, "&aReset pool '" + poolId + "'");
+            return true;
+        }
+
+        @Override
+        public @Nullable List<String> tabComplete(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args, @NotNull String[] fullArgs) {
+            return ItemPools.getInstance().getItemPoolManager().getItemPools().stream().map(ItemPool::getId).toList();
+        }
+    }
+
+    private static class SaveSubCommand extends SubCommand {
+
+        public SaveSubCommand() {
+            super("save");
+        }
+
+        @Override
+        public boolean execute(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args, @NotNull String[] fullArgs) {
+            if (!sender.hasPermission("itempools.save")) {
+                ChatColorHandler.sendMessage(sender, "&cIncorrect permissions.");
+                return true;
+            }
+
+            if (args.length != 1) {
+                ChatColorHandler.sendMessage(sender, "&cIncorrect usage, try: /itempools save <pool>");
+                return true;
+            }
+
+            String poolId = args[0];
+            ItemPool itemPool = ItemPools.getInstance().getItemPoolManager().getItemPool(poolId);
+            if (itemPool == null) {
+                ChatColorHandler.sendMessage(sender, "&cThat is not a valid item pool");
+                return  true;
+            }
+
+            ItemPools.getInstance().getItemPoolDataManager().savePoolData(itemPool);
+            ChatColorHandler.sendMessage(sender, "&aSaved pool '" + poolId + "'");
             return true;
         }
 

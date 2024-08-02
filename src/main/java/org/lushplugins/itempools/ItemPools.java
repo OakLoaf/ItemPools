@@ -65,10 +65,14 @@ public final class ItemPools extends SpigotPlugin {
 
     @Override
     public void onDisable() {
-        ItemPoolDataManager dataManager = getItemPoolDataManager();
-        for (ItemPool pool : getItemPoolManager().getItemPools()) {
-            dataManager.savePoolData(pool);
+        ConfigManager configManager = getConfigManager();
+        if (configManager != null && configManager.shouldSave()) {
+            ItemPoolDataManager dataManager = getItemPoolDataManager();
+            for (ItemPool pool : getItemPoolManager().getItemPools()) {
+                dataManager.savePoolData(pool);
+            }
         }
+
         unregisterManager(ItemPoolDataManager.class);
 
         this.getServer().getMessenger().unregisterIncomingPluginChannel(this);

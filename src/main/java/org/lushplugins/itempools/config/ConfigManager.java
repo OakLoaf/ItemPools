@@ -9,6 +9,7 @@ import org.lushplugins.itempools.pool.ItemPool;
 import org.lushplugins.lushlib.manager.Manager;
 
 public class ConfigManager extends Manager {
+    private boolean shouldSave;
     private BukkitTask saveTask;
 
     public ConfigManager() {
@@ -24,6 +25,7 @@ public class ConfigManager extends Manager {
 
         int saveRate = config.getInt("save-rate", -1);
         if (saveRate > 0) {
+            shouldSave = true;
             long saveRateInTicks = saveRate * 120L;
             saveTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
                 ItemPoolDataManager dataManager = plugin.getItemPoolDataManager();
@@ -31,6 +33,8 @@ public class ConfigManager extends Manager {
                     dataManager.savePoolData(pool);
                 }
             }, saveRateInTicks, saveRateInTicks);
+        } else {
+            shouldSave = false;
         }
     }
 
@@ -45,5 +49,9 @@ public class ConfigManager extends Manager {
     public void reload() {
         disable();
         enable();
+    }
+
+    public boolean shouldSave() {
+        return shouldSave;
     }
 }
