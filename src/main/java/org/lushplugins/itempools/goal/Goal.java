@@ -106,7 +106,7 @@ public class Goal implements Cloneable {
             this.goal,
             this.value,
             this.completed,
-            new ArrayList<>(this.completionCommands));
+            this.completionCommands != null ? new ArrayList<>(this.completionCommands) : null);
     }
 
     public static class Builder {
