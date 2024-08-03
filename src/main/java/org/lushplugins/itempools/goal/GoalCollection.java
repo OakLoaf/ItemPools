@@ -1,13 +1,11 @@
 package org.lushplugins.itempools.goal;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.lushplugins.itempools.ItemPools;
 import org.lushplugins.itempools.util.JsonUtils;
 
 import java.util.ArrayList;
