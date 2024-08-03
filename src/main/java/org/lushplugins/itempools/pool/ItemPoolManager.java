@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 
 public class ItemPoolManager extends Manager {
     /**
@@ -42,7 +41,7 @@ public class ItemPoolManager extends Manager {
                     return;
                 }
 
-                Collection<Entity> entities = itemPool.getRegion().getEntities(entity -> entity.getType().equals(EntityType.DROPPED_ITEM));
+                Collection<Entity> entities = itemPool.getRegion().getEntities(entity -> entity.getType().equals(EntityType.ITEM));
                 entities.forEach(entity -> {
                     if (entity instanceof Item item) {
                         ItemStack itemStack = item.getItemStack();
