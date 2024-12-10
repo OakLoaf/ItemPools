@@ -80,7 +80,11 @@ public class GoalItem implements Cloneable {
     @Nullable
     public static GoalItem create(ConfigurationSection configurationSection) {
         String materialRaw = configurationSection.contains("type") ? configurationSection.getString("type") : configurationSection.getName();
-        Material material = StringUtils.getEnum(materialRaw, Material.class).orElse(null);
+        if (materialRaw == null) {
+            return null;
+        }
+
+        Material material = RegistryUtils.fromString(Registry.MATERIAL, materialRaw);
         if (material == null) {
             return null;
         }
