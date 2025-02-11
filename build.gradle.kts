@@ -10,12 +10,12 @@ version = "1.0.3"
 repositories {
     mavenCentral()
     mavenLocal()
-    maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") } // Spigot
-    maven { url = uri("https://repo.fancyplugins.de/releases/")} // FancyHolograms
-    maven { url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")} // PlaceholderAPI
-    maven { url = uri("https://mvn-repo.arim.space/lesser-gpl3/") } // MorePaperLib
-    maven { url = uri("https://repo.smrt-1.com/releases/") } // LushLib
-    maven { url = uri("https://repo.smrt-1.com/snapshots/") } // LushLib
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") // Spigot
+    maven("https://repo.fancyplugins.de/releases/") // FancyHolograms
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
+    maven("https://mvn-repo.arim.space/lesser-gpl3/") // MorePaperLib
+    maven("https://repo.smrt-1.com/releases/") // LushLib
+    maven("https://repo.smrt-1.com/snapshots/") // LushLib
 }
 
 dependencies {
