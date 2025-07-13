@@ -1,15 +1,15 @@
 plugins {
     `java-library`
     `maven-publish`
-    id("io.github.goooler.shadow") version("8.1.7")
+    id("com.gradleup.shadow") version("8.3.0")
 }
 
 group = "org.lushplugins"
 version = "1.0.3"
 
 repositories {
-    mavenCentral()
     mavenLocal()
+    mavenCentral()
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") // Spigot
     maven("https://repo.fancyplugins.de/releases/") // FancyHolograms
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
@@ -18,16 +18,27 @@ repositories {
 }
 
 dependencies {
+    // Dependencies
     compileOnly("org.spigotmc:spigot:1.21-R0.1-SNAPSHOT")
+    compileOnly("com.mysql:mysql-connector-j:8.3.0")
+
+    // Soft Dependencies
     compileOnly("de.oliver:FancyHolograms:2.3.0")
     compileOnly("me.clip:placeholderapi:2.11.2")
+
+    // Libraries
     implementation("org.lushplugins:LushLib:0.7.7")
     implementation("com.zaxxer:HikariCP:5.0.1")
-    implementation("com.mysql:mysql-connector-j:8.3.0")
 }
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+
+    registerFeature("optional") {
+        usingSourceSet(sourceSets["main"])
+    }
+
+    withSourcesJar()
 }
 
 tasks {
@@ -37,23 +48,53 @@ tasks {
 
     shadowJar {
         relocate("org.lushplugins.lushlib", "org.lushplugins.itempools.libraries.lushlib")
-        relocate("com.mysql", "org.lushplugins.itempools.libraries.mysql")
 
-        minimize {
-            exclude(dependency("com.mysql:.*:.*"))
-        }
+        minimize()
 
-        val folder = System.getenv("pluginFolder")
-        if (folder != null) destinationDirectory.set(file(folder))
         archiveFileName.set("${project.name}-${project.version}.jar")
     }
 
     processResources{
-        expand(project.properties)
+        filesMatching("plugin.yml") {
+            expand(project.properties)
+        }
 
         inputs.property("version", rootProject.version)
         filesMatching("plugin.yml") {
             expand("version" to rootProject.version)
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "lushReleases"
+            url = uri("https://repo.lushplugins.org/releases")
+            credentials(PasswordCredentials::class)
+            authentication {
+                isAllowInsecureProtocol = true
+                create<BasicAuthentication>("basic")
+            }
+        }
+
+        maven {
+            name = "lushSnapshots"
+            url = uri("https://repo.lushplugins.org/snapshots")
+            credentials(PasswordCredentials::class)
+            authentication {
+                isAllowInsecureProtocol = true
+                create<BasicAuthentication>("basic")
+            }
+        }
+    }
+
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = rootProject.group.toString()
+            artifactId = rootProject.name
+            version = rootProject.version.toString()
+            from(project.components["java"])
         }
     }
 }
