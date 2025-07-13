@@ -1,6 +1,5 @@
 package org.lushplugins.itempools.pool;
 
-import com.mojang.datafixers.util.Pair;
 import org.lushplugins.itempools.ItemPools;
 import org.lushplugins.itempools.config.GoalProviderConfigManager;
 import org.lushplugins.itempools.goal.Goal;
@@ -11,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lushplugins.lushlib.utils.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +54,8 @@ public class ItemPool {
         GoalProviderConfigManager goalProviderManager = ItemPools.getInstance().getGoalProviderConfigManager();
         if (goalProviders != null) {
             goalProviders.forEach((providerData) -> {
-                String providerName = providerData.getFirst();
-                int amount = providerData.getSecond();
+                String providerName = providerData.first();
+                int amount = providerData.second();
 
                 GoalProvider provider = goalProviderManager.getProvider(providerName);
                 if (provider != null) {

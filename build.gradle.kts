@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
     // Dependencies
-    compileOnly("org.spigotmc:spigot:1.21-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.21.7-R0.1-SNAPSHOT")
     compileOnly("com.mysql:mysql-connector-j:8.3.0")
 
     // Soft Dependencies
@@ -27,7 +27,7 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.2")
 
     // Libraries
-    implementation("org.lushplugins:LushLib:0.7.7")
+    implementation("org.lushplugins:LushLib:0.10.74")
     implementation("com.zaxxer:HikariCP:5.0.1")
 }
 

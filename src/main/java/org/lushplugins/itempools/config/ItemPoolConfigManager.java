@@ -1,6 +1,5 @@
 package org.lushplugins.itempools.config;
 
-import com.mojang.datafixers.util.Pair;
 import org.lushplugins.itempools.ItemPools;
 import org.lushplugins.itempools.goal.Goal;
 import org.lushplugins.itempools.goal.GoalItem;
@@ -16,6 +15,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.lushplugins.itempools.goal.GoalCollection;
+import org.lushplugins.lushlib.utils.Pair;
 
 import java.util.ArrayList;
 import java.util.List;

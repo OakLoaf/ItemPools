@@ -4,14 +4,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.bukkit.Registry;
 import org.lushplugins.itempools.util.JsonUtils;
-import org.lushplugins.lushlib.utils.RegistryUtils;
-import org.lushplugins.lushlib.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lushplugins.lushlib.registry.RegistryUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +83,7 @@ public class GoalItem implements Cloneable {
             return null;
         }
 
-        Material material = RegistryUtils.fromString(Registry.MATERIAL, materialRaw);
+        Material material = RegistryUtils.parseString(materialRaw, Registry.MATERIAL);
         if (material == null) {
             return null;
         }
@@ -104,7 +103,7 @@ public class GoalItem implements Cloneable {
 
     public static GoalItem fromJson(JsonObject json) {
         String materialRaw = json.get("type").getAsString();
-        Material material = RegistryUtils.fromString(Registry.MATERIAL, materialRaw);
+        Material material = RegistryUtils.parseString(materialRaw, Registry.MATERIAL);
         if (material == null) {
             throw new IllegalArgumentException("Found invalid material type '" + materialRaw + "'");
         }
