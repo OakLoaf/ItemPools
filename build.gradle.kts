@@ -20,7 +20,7 @@ repositories {
 dependencies {
     // Dependencies
     compileOnly("org.spigotmc:spigot-api:1.21.7-R0.1-SNAPSHOT")
-    compileOnly("com.mysql:mysql-connector-j:8.3.0")
+    compileOnly("com.mysql:mysql-connector-j:9.3.0")
 
     // Soft Dependencies
     compileOnly("de.oliver:FancyHolograms:2.6.0")
