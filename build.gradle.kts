@@ -24,7 +24,7 @@ dependencies {
 
     // Soft Dependencies
     compileOnly("de.oliver:FancyHolograms:2.3.0")
-    compileOnly("me.clip:placeholderapi:2.11.2")
+    compileOnly("me.clip:placeholderapi:2.11.6")
 
     // Libraries
     implementation("org.lushplugins:LushLib:0.10.74")
