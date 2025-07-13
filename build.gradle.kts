@@ -14,8 +14,7 @@ repositories {
     maven("https://repo.fancyplugins.de/releases/") // FancyHolograms
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
     maven("https://mvn-repo.arim.space/lesser-gpl3/") // MorePaperLib
-    maven("https://repo.smrt-1.com/releases/") // LushLib
-    maven("https://repo.smrt-1.com/snapshots/") // LushLib
+    maven("https://repo.lushplugins.org/snapshots/") // LushLib
 }
 
 dependencies {
