@@ -23,7 +23,7 @@ dependencies {
     compileOnly("com.mysql:mysql-connector-j:9.3.0")
 
     // Soft Dependencies
-    compileOnly("de.oliver:FancyHolograms:2.6.0")
+    compileOnly("de.oliver:FancyHolograms:2.7.0")
     compileOnly("me.clip:placeholderapi:2.11.6")
 
     // Libraries
