@@ -28,7 +28,7 @@ dependencies {
 
     // Libraries
     implementation("org.lushplugins:LushLib:0.10.78")
-    implementation("com.zaxxer:HikariCP:6.3.2")
+    implementation("com.zaxxer:HikariCP:7.0.0")
 }
 
 java {
