@@ -27,7 +27,7 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.7")
 
     // Libraries
-    implementation("org.lushplugins:LushLib:0.10.83")
+    implementation("org.lushplugins:LushLib:0.10.84")
     implementation("com.zaxxer:HikariCP:7.0.2")
 }
 
