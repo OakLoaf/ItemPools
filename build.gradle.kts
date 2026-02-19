@@ -1,20 +1,19 @@
 plugins {
     `java-library`
-    `maven-publish`
     id("com.gradleup.shadow") version("9.3.1")
+    id("xyz.jpenilla.run-paper") version("3.0.2")
 }
 
 group = "org.lushplugins"
-version = "1.0.3"
+version = "2.0.0"
 
 repositories {
     mavenLocal()
     mavenCentral()
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") // Spigot
+    maven("https://repo.lushplugins.org/snapshots/") // LushLib, PlaceholderHandler
     maven("https://repo.fancyplugins.de/releases/") // FancyHolograms
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
-    maven("https://mvn-repo.arim.space/lesser-gpl3/") // MorePaperLib
-    maven("https://repo.lushplugins.org/snapshots/") // LushLib
 }
 
 dependencies {
@@ -27,8 +26,11 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.7")
 
     // Libraries
-    implementation("org.lushplugins:LushLib:0.10.84")
+    implementation("org.lushplugins:LushLib:0.10.85")
     implementation("com.zaxxer:HikariCP:7.0.2")
+    implementation("io.github.revxrsal:lamp.common:4.0.0-rc.14")
+    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.14")
+    implementation("org.lushplugins:PlaceholderHandler:1.0.0-alpha8")
 }
 
 java {
@@ -44,6 +46,7 @@ java {
 tasks {
     withType<JavaCompile> {
         options.encoding = "UTF-8"
+        options.compilerArgs.add("-parameters")
     }
 
     shadowJar {
@@ -64,37 +67,14 @@ tasks {
             expand("version" to rootProject.version)
         }
     }
-}
 
-publishing {
-    repositories {
-        maven {
-            name = "lushReleases"
-            url = uri("https://repo.lushplugins.org/releases")
-            credentials(PasswordCredentials::class)
-            authentication {
-                isAllowInsecureProtocol = true
-                create<BasicAuthentication>("basic")
-            }
-        }
+    runServer {
+        minecraftVersion("1.21.11")
 
-        maven {
-            name = "lushSnapshots"
-            url = uri("https://repo.lushplugins.org/snapshots")
-            credentials(PasswordCredentials::class)
-            authentication {
-                isAllowInsecureProtocol = true
-                create<BasicAuthentication>("basic")
-            }
-        }
-    }
-
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = rootProject.group.toString()
-            artifactId = rootProject.name
-            version = rootProject.version.toString()
-            from(project.components["java"])
+        downloadPlugins {
+            hangar("PlaceholderAPI", "2.11.6")
+            modrinth("viaversion", "5.7.1")
+            modrinth("viabackwards", "5.7.1")
         }
     }
 }

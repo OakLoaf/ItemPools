@@ -6,6 +6,6 @@ import org.lushplugins.itempools.pool.ItemPool;
 public record ItemPoolGoalData(String id, GoalCollection goals, boolean completed) {
 
     public static ItemPoolGoalData from(ItemPool itemPool) {
-        return new ItemPoolGoalData(itemPool.getId(), itemPool.getGoalCollection(), itemPool.hasCompleted());
+        return new ItemPoolGoalData(itemPool.getId(), itemPool.getGoals(), itemPool.hasCompleted());
     }
 }

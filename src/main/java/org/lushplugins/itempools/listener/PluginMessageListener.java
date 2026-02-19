@@ -12,7 +12,6 @@ import org.lushplugins.itempools.pool.ItemPool;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.logging.Level;
 
 public class PluginMessageListener implements org.bukkit.plugin.messaging.PluginMessageListener {
 
@@ -45,7 +44,7 @@ public class PluginMessageListener implements org.bukkit.plugin.messaging.Plugin
                         return;
                     }
 
-                    GoalCollection goals = itemPool.getGoalCollection();
+                    GoalCollection goals = itemPool.getGoals();
                     if (goals == null) {
                         return;
                     }

@@ -1,5 +1,7 @@
 package org.lushplugins.itempools.config;
 
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.Vector;
 import org.lushplugins.itempools.ItemPools;
 import org.lushplugins.itempools.goal.Goal;
 import org.lushplugins.itempools.goal.GoalItem;
@@ -7,15 +9,14 @@ import org.lushplugins.itempools.goal.GoalProvider;
 import org.lushplugins.itempools.pool.ItemPool;
 import org.lushplugins.itempools.pool.ItemPoolManager;
 import org.lushplugins.itempools.region.Region;
-import org.lushplugins.itempools.util.YamlUtils;
 import org.lushplugins.lushlib.manager.Manager;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.lushplugins.itempools.goal.GoalCollection;
 import org.lushplugins.lushlib.utils.Pair;
+import org.lushplugins.lushlib.utils.YamlUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,34 +62,33 @@ public class ItemPoolConfigManager extends Manager {
                 Region region = new Region(
                     poolId,
                     world,
-                    new Location(world, Double.parseDouble(pos1CoordsRaw[0]), Double.parseDouble(pos1CoordsRaw[1]), Double.parseDouble(pos1CoordsRaw[2])),
-                    new Location(world, Double.parseDouble(pos2CoordsRaw[0]), Double.parseDouble(pos2CoordsRaw[1]), Double.parseDouble(pos2CoordsRaw[2]))
+                    BoundingBox.of(
+                        new Vector(Double.parseDouble(pos1CoordsRaw[0]), Double.parseDouble(pos1CoordsRaw[1]), Double.parseDouble(pos1CoordsRaw[2])),
+                        new Vector(Double.parseDouble(pos2CoordsRaw[0]), Double.parseDouble(pos2CoordsRaw[1]), Double.parseDouble(pos2CoordsRaw[2]))
+                    )
                 );
 
                 GoalCollection goals = new GoalCollection();
                 // TODO: Make ImmutableGoal and ImmutableGoalCollection
                 GoalCollection defaultGoals = new GoalCollection();
-                ConfigurationSection goalsSection = poolSection.getConfigurationSection("goals");
-                if (goalsSection != null) {
-                    YamlUtils.getConfigurationSections(goalsSection).forEach(goalSection -> {
-                        GoalItem goalItem = GoalItem.create(goalSection);
-                        if (goalItem == null) {
-                            return;
-                        }
+                YamlUtils.getConfigurationSections(poolSection, "goals").forEach(goalSection -> {
+                    GoalItem goalItem = GoalItem.create(goalSection);
+                    if (goalItem == null) {
+                        return;
+                    }
 
-                        Goal goal = new Goal.Builder(goalSection.getName())
-                            .setDisplayName(goalSection.getString("display-name"))
-                            .setGoalItem(goalItem)
-                            .setGoal(goalSection.getInt("goal"))
-                            .setValue(goalSection.getInt("current"))
-                            .setCompleted(goalSection.getBoolean("completed"))
-                            .setCompletionCommands(goalSection.getStringList("completion-commands"))
-                            .build();
+                    Goal goal = new Goal.Builder(goalSection.getName())
+                        .setDisplayName(goalSection.getString("display-name"))
+                        .setGoalItem(goalItem)
+                        .setGoal(goalSection.getInt("goal"))
+                        .setValue(goalSection.getInt("current"))
+                        .setCompleted(goalSection.getBoolean("completed"))
+                        .setCompletionCommands(goalSection.getStringList("completion-commands"))
+                        .build();
 
-                        defaultGoals.add(goal.clone());
-                        goals.add(goal);
-                    });
-                }
+                    defaultGoals.add(goal.clone());
+                    goals.add(goal);
+                });
 
                 List<Pair<String, Integer>> goalProviders = new ArrayList<>();
                 ConfigurationSection providersSection = poolSection.getConfigurationSection("goal-providers");

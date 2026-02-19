@@ -44,7 +44,7 @@ public class ItemPool {
         return region;
     }
 
-    public GoalCollection getGoalCollection() {
+    public GoalCollection getGoals() {
         return goals;
     }
 
