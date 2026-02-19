@@ -57,7 +57,7 @@ public class GoalItem implements Cloneable {
     }
 
     public void save(ConfigurationSection configurationSection) {
-        configurationSection.set("type", material.getKey().toString());
+        configurationSection.set("type", material.getKeyOrThrow().toString());
         configurationSection.set("meta.display-name", displayName);
         configurationSection.set("meta.lore", lore);
         configurationSection.set("meta.custom-model-data", customModelData);
@@ -67,7 +67,7 @@ public class GoalItem implements Cloneable {
     public JsonElement toJson() {
         JsonObject json = new JsonObject();
 
-        json.addProperty("type", material.getKey().toString());
+        json.addProperty("type", material.getKeyOrThrow().toString());
         json.addProperty("meta.display-name", displayName);
         JsonUtils.setStringList(json, "meta.lore", lore);
         json.addProperty("meta.custom-model-data", customModelData);
