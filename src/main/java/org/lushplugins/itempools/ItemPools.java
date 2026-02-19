@@ -22,6 +22,8 @@ import org.lushplugins.lushlib.LushLib;
 import org.lushplugins.lushlib.hook.Hook;
 import org.lushplugins.lushlib.manager.Manager;
 import org.lushplugins.lushlib.plugin.SpigotPlugin;
+import revxrsal.commands.bukkit.BukkitLamp;
+import revxrsal.commands.exception.CommandErrorException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -61,7 +63,22 @@ public final class ItemPools extends SpigotPlugin {
         new PluginMessageListener().register();
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
-        registerCommand(new ItemPoolsCommand());
+        BukkitLamp.builder(this)
+            .parameterTypes(parameterTypes -> parameterTypes
+                .addParameterType(ItemPool.class, (input, context) -> {
+                    return ItemPools.getInstance().getItemPoolManager().getItemPool(input.readString());
+                }))
+            .parameterValidator(ItemPool.class, (actor, pool, node, lamp) -> {
+                if (pool == null) {
+                    throw new CommandErrorException("That is not a valid item pool");
+                }
+            })
+            .suggestionProviders(providers -> providers
+                .addProvider(ItemPool.class, (context) -> {
+                    return ItemPools.getInstance().getItemPoolManager().getItemPoolIds();
+                }))
+            .build()
+            .register(new ItemPoolsCommand());
     }
 
     @Override

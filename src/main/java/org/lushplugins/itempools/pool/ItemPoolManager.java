@@ -12,7 +12,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set;import java.util.concurrent.ConcurrentHashMap;
 
 public class ItemPoolManager extends Manager {
     /**
@@ -88,6 +88,10 @@ public class ItemPoolManager extends Manager {
     @Nullable
     public ItemPool getItemPool(String name) {
         return itemPools.get(name);
+    }
+
+    public Set<String> getItemPoolIds() {
+        return itemPools.keySet();
     }
 
     public Collection<ItemPool> getItemPools() {
