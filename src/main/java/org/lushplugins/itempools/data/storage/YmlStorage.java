@@ -5,9 +5,9 @@ import org.lushplugins.itempools.data.ItemPoolGoalData;
 import org.lushplugins.itempools.goal.Goal;
 import org.lushplugins.itempools.goal.GoalCollection;
 import org.lushplugins.itempools.goal.GoalItem;
-import org.lushplugins.itempools.util.YamlUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.lushplugins.lushlib.utils.YamlUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,24 +24,21 @@ public class YmlStorage implements Storage {
             boolean poolCompleted = poolSection.getBoolean("completed");
 
             GoalCollection goals = new GoalCollection();
-            ConfigurationSection goalsSection = poolSection.getConfigurationSection("goals");
-            if (goalsSection != null) {
-                YamlUtils.getConfigurationSections(goalsSection).forEach(goalSection -> {
-                    GoalItem goalItem = GoalItem.create(goalSection);
-                    if (goalItem == null) {
-                        return;
-                    }
+            YamlUtils.getConfigurationSections(poolSection, "goals").forEach(goalSection -> {
+                GoalItem goalItem = GoalItem.create(goalSection);
+                if (goalItem == null) {
+                    return;
+                }
 
-                    goals.add(new Goal.Builder(goalSection.getName())
-                        .setDisplayName(goalSection.getString("display-name"))
-                        .setGoalItem(goalItem)
-                        .setGoal(goalSection.getInt("goal"))
-                        .setValue(goalSection.getInt("current"))
-                        .setCompleted(goalSection.getBoolean("completed", false))
-                        .build()
-                    );
-                });
-            }
+                goals.add(new Goal.Builder(goalSection.getName())
+                    .setDisplayName(goalSection.getString("display-name"))
+                    .setGoalItem(goalItem)
+                    .setGoal(goalSection.getInt("goal"))
+                    .setValue(goalSection.getInt("current"))
+                    .setCompleted(goalSection.getBoolean("completed", false))
+                    .build()
+                );
+            });
 
             return new ItemPoolGoalData(poolId, goals, poolCompleted);
         } else {
