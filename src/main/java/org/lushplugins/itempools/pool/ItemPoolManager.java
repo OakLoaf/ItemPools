@@ -30,7 +30,7 @@ public class ItemPoolManager extends Manager {
                     return;
                 }
 
-                for (Goal goal : itemPool.getGoalCollection()) {
+                for (Goal goal : itemPool.getGoals()) {
                     if (!goal.hasCompleted() && goal.isCompletable()) {
                         goal.complete();
                     }
@@ -46,7 +46,7 @@ public class ItemPoolManager extends Manager {
                     if (entity instanceof Item item) {
                         ItemStack itemStack = item.getItemStack();
                         int amount = itemStack.getAmount();
-                        Goal goal = itemPool.getGoalCollection().get(itemStack);
+                        Goal goal = itemPool.getGoals().get(itemStack);
                         if (goal == null || goal.hasCompleted()) {
                             return;
                         }

@@ -13,19 +13,19 @@ public class Placeholders {
 
     @SubPlaceholder("<pool>_<goalType>_current")
     public String current(ItemPool pool, Material goalType) {
-        Goal goal = pool.getGoalCollection().get(new ItemStack(goalType));
+        Goal goal = pool.getGoals().get(new ItemStack(goalType));
         return goal != null ? String.valueOf(goal.getValue()) : "Invalid Goal";
     }
 
     @SubPlaceholder("<pool>_<goalType>_remaining")
     public String remaining(ItemPool pool, Material goalType) {
-        Goal goal = pool.getGoalCollection().get(new ItemStack(goalType));
+        Goal goal = pool.getGoals().get(new ItemStack(goalType));
         return goal != null ? String.valueOf(goal.getAmountRemaining()) : "Invalid Goal";
     }
 
     @SubPlaceholder("<pool>_<goalType>_goal")
     public String goal(ItemPool pool, Material goalType) {
-        Goal goal = pool.getGoalCollection().get(new ItemStack(goalType));
+        Goal goal = pool.getGoals().get(new ItemStack(goalType));
         return goal != null ? String.valueOf(goal.getGoal()) : "Invalid Goal";
     }
 }

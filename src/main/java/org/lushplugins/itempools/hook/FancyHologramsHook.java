@@ -39,7 +39,7 @@ public class FancyHologramsHook extends Hook {
             itemPool -> hologramManager.getHologram("itempool_" + itemPool.getId()).ifPresent(hologram -> {
             if (hologram.getData() instanceof TextHologramData textData) {
                 List<String> text = new ArrayList<>();
-                itemPool.getGoalCollection().forEach(goal -> text.add(goal.getDisplayName() + ": " + goal.getValue() + "/" + goal.getGoal()));
+                itemPool.getGoals().forEach(goal -> text.add(goal.getDisplayName() + ": " + goal.getValue() + "/" + goal.getGoal()));
                 textData.setText(text);
             }
         }));

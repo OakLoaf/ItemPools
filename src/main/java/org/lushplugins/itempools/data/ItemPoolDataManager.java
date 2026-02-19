@@ -62,7 +62,7 @@ public class ItemPoolDataManager extends Manager {
                 return;
             }
 
-            GoalCollection goalCollection = itemPool.getGoalCollection();
+            GoalCollection goalCollection = itemPool.getGoals();
             goalCollection.clear();
             goalCollection.addAll(poolData.goals().values());
 
