@@ -90,7 +90,6 @@ public final class ItemPools extends SpigotPlugin {
             .registerParameterProvider(Material.class, (type, parameter, context) -> {
                 return RegistryUtils.parseString(parameter, Registry.MATERIAL);
             })
-            .registerParameterProvider(String.class, (type, parameter, context) -> parameter) // TODO: Migrate to PlaceholderHandler
             .build()
             .register(new Placeholders());
     }
