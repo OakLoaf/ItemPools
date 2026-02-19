@@ -1,5 +1,7 @@
 package org.lushplugins.itempools.config;
 
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.Vector;
 import org.lushplugins.itempools.ItemPools;
 import org.lushplugins.itempools.goal.Goal;
 import org.lushplugins.itempools.goal.GoalItem;
@@ -10,7 +12,6 @@ import org.lushplugins.itempools.region.Region;
 import org.lushplugins.itempools.util.YamlUtils;
 import org.lushplugins.lushlib.manager.Manager;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -61,8 +62,10 @@ public class ItemPoolConfigManager extends Manager {
                 Region region = new Region(
                     poolId,
                     world,
-                    new Location(world, Double.parseDouble(pos1CoordsRaw[0]), Double.parseDouble(pos1CoordsRaw[1]), Double.parseDouble(pos1CoordsRaw[2])),
-                    new Location(world, Double.parseDouble(pos2CoordsRaw[0]), Double.parseDouble(pos2CoordsRaw[1]), Double.parseDouble(pos2CoordsRaw[2]))
+                    BoundingBox.of(
+                        new Vector(Double.parseDouble(pos1CoordsRaw[0]), Double.parseDouble(pos1CoordsRaw[1]), Double.parseDouble(pos1CoordsRaw[2])),
+                        new Vector(Double.parseDouble(pos2CoordsRaw[0]), Double.parseDouble(pos2CoordsRaw[1]), Double.parseDouble(pos2CoordsRaw[2]))
+                    )
                 );
 
                 GoalCollection goals = new GoalCollection();
