@@ -6,6 +6,8 @@ import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.Registry;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.lushplugins.itempools.command.ItemPoolsCommand;
@@ -14,14 +16,16 @@ import org.lushplugins.itempools.config.GoalProviderConfigManager;
 import org.lushplugins.itempools.config.ItemPoolConfigManager;
 import org.lushplugins.itempools.data.ItemPoolDataManager;
 import org.lushplugins.itempools.hook.FancyHologramsHook;
-import org.lushplugins.itempools.hook.PlaceholderAPIHook;
 import org.lushplugins.itempools.listener.PluginMessageListener;
+import org.lushplugins.itempools.placeholder.Placeholders;
 import org.lushplugins.itempools.pool.ItemPool;
 import org.lushplugins.itempools.pool.ItemPoolManager;
 import org.lushplugins.lushlib.LushLib;
 import org.lushplugins.lushlib.hook.Hook;
 import org.lushplugins.lushlib.manager.Manager;
 import org.lushplugins.lushlib.plugin.SpigotPlugin;
+import org.lushplugins.lushlib.registry.RegistryUtils;
+import org.lushplugins.placeholderhandler.PlaceholderHandler;
 import revxrsal.commands.bukkit.BukkitLamp;
 import revxrsal.commands.exception.CommandErrorException;
 
@@ -56,8 +60,7 @@ public final class ItemPools extends SpigotPlugin {
             new ItemPoolConfigManager()
         );
 
-        addHook("PlaceholderAPI", () -> registerHook(new PlaceholderAPIHook()));
-        addHook("FancyHolograms", () -> registerHook(new FancyHologramsHook()));
+        ifPluginPresent("FancyHolograms", () -> registerHook(new FancyHologramsHook()));
         hooks.values().forEach(Hook::enable);
 
         new PluginMessageListener().register();
@@ -79,6 +82,17 @@ public final class ItemPools extends SpigotPlugin {
                 }))
             .build()
             .register(new ItemPoolsCommand());
+
+        PlaceholderHandler.builder(this)
+            .registerParameterProvider(ItemPool.class, (type, parameter, context) -> {
+                return ItemPools.getInstance().getItemPoolManager().getItemPool(parameter);
+            })
+            .registerParameterProvider(Material.class, (type, parameter, context) -> {
+                return RegistryUtils.parseString(parameter, Registry.MATERIAL);
+            })
+            .registerParameterProvider(String.class, (type, parameter, context) -> parameter) // TODO: Migrate to PlaceholderHandler
+            .build()
+            .register(new Placeholders());
     }
 
     @Override

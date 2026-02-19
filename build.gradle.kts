@@ -30,7 +30,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:7.0.2")
     implementation("io.github.revxrsal:lamp.common:4.0.0-rc.14")
     implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.14")
-    implementation("org.lushplugins:PlaceholderHandler:1.0.0-alpha7")
+    implementation("org.lushplugins:PlaceholderHandler:1.0.0-alpha8")
 }
 
 java {
@@ -72,6 +72,7 @@ tasks {
         minecraftVersion("1.21.11")
 
         downloadPlugins {
+            hangar("PlaceholderAPI", "2.11.6")
             modrinth("viaversion", "5.7.1")
             modrinth("viabackwards", "5.7.1")
         }
