@@ -1,6 +1,7 @@
 package org.lushplugins.itempools.pool;
 
 import org.lushplugins.itempools.ItemPools;
+import org.lushplugins.itempools.event.ItemPoolGoalUpdateEvent;
 import org.lushplugins.itempools.goal.Goal;
 import org.lushplugins.lushlib.manager.Manager;
 import org.bukkit.Bukkit;
@@ -60,7 +61,10 @@ public class ItemPoolManager extends Manager {
                             increase = goal.getAmountRemaining();
                         }
 
+                        int oldGoalValue = goal.getValue();
                         goal.increaseValue(increase);
+                        ItemPools.getInstance().callEvent(new ItemPoolGoalUpdateEvent(itemPool, goal, oldGoalValue, goal.getValue()));
+
                         if (goal.isCompletable()) {
                             goal.complete();
                         }
