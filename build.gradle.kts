@@ -1,11 +1,12 @@
 plugins {
     `java-library`
+    `maven-publish`
     id("com.gradleup.shadow") version("9.3.1")
     id("xyz.jpenilla.run-paper") version("3.0.2")
 }
 
 group = "org.lushplugins"
-version = "2.0.0"
+version = "2.1.0"
 
 repositories {
     mavenLocal()
@@ -75,6 +76,39 @@ tasks {
             hangar("PlaceholderAPI", "2.11.6")
             modrinth("viaversion", "5.7.1")
             modrinth("viabackwards", "5.7.1")
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "lushReleases"
+            url = uri("https://repo.lushplugins.org/releases")
+            credentials(PasswordCredentials::class)
+            authentication {
+                isAllowInsecureProtocol = true
+                create<BasicAuthentication>("basic")
+            }
+        }
+
+        maven {
+            name = "lushSnapshots"
+            url = uri("https://repo.lushplugins.org/snapshots")
+            credentials(PasswordCredentials::class)
+            authentication {
+                isAllowInsecureProtocol = true
+                create<BasicAuthentication>("basic")
+            }
+        }
+    }
+
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = rootProject.group.toString()
+            artifactId = rootProject.name
+            version = rootProject.version.toString()
+            from(project.components["java"])
         }
     }
 }
