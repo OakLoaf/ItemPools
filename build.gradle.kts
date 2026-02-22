@@ -11,7 +11,8 @@ version = "2.1.0"
 repositories {
     mavenLocal()
     mavenCentral()
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") // Spigot
+    maven("https://oss.sonatype.org/content/groups/public/")
+    maven("https://repo.papermc.io/repository/maven-public/") // Paper
     maven("https://repo.lushplugins.org/snapshots/") // LushLib, PlaceholderHandler
     maven("https://repo.fancyplugins.de/releases/") // FancyHolograms
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
@@ -19,7 +20,7 @@ repositories {
 
 dependencies {
     // Dependencies
-    compileOnly("org.spigotmc:spigot-api:1.21.11-R0.2-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
     compileOnly("com.mysql:mysql-connector-j:9.6.0")
 
     // Soft Dependencies
