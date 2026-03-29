@@ -6,9 +6,8 @@ import org.bukkit.scheduler.BukkitTask;
 import org.lushplugins.itempools.ItemPools;
 import org.lushplugins.itempools.data.ItemPoolDataManager;
 import org.lushplugins.itempools.pool.ItemPool;
-import org.lushplugins.lushlib.manager.Manager;
 
-public class ConfigManager extends Manager {
+public class ConfigManager {
     private boolean shouldSave;
     private BukkitTask saveTask;
 
@@ -16,8 +15,12 @@ public class ConfigManager extends Manager {
         ItemPools.getInstance().saveDefaultConfig();
     }
 
-    @Override
-    public void onEnable() {
+    public void reload() {
+        if (saveTask != null) {
+            saveTask.cancel();
+            saveTask = null;
+        }
+
         ItemPools plugin = ItemPools.getInstance();
 
         plugin.reloadConfig();
@@ -36,19 +39,6 @@ public class ConfigManager extends Manager {
         } else {
             shouldSave = false;
         }
-    }
-
-    @Override
-    public void onDisable() {
-        if (saveTask != null) {
-            saveTask.cancel();
-            saveTask = null;
-        }
-    }
-
-    public void reload() {
-        disable();
-        enable();
     }
 
     public boolean shouldSave() {

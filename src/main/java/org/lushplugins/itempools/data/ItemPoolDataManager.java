@@ -6,7 +6,6 @@ import org.lushplugins.itempools.data.storage.Storage;
 import org.lushplugins.itempools.data.storage.YmlStorage;
 import org.lushplugins.itempools.goal.GoalCollection;
 import org.lushplugins.itempools.pool.ItemPool;
-import org.lushplugins.lushlib.manager.Manager;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -15,12 +14,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ItemPoolDataManager extends Manager {
+public class ItemPoolDataManager {
     private final ExecutorService threads = Executors.newFixedThreadPool(1);
     private Storage storage;
 
-    @Override
-    public void onEnable() {
+    public void reload() {
         ItemPools.getInstance().saveDefaultResource("storage.yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(ItemPools.getInstance().getDataFolder(), "storage.yml"));
 
@@ -50,8 +48,7 @@ public class ItemPoolDataManager extends Manager {
         ItemPools.getInstance().getLogger().info("Successfully loaded '" + storageType + "' storage");
     }
 
-    @Override
-    public void onDisable() {
+    public void shutdown() {
         threads.shutdown();
     }
 

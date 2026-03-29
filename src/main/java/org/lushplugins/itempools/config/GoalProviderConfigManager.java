@@ -4,19 +4,17 @@ import org.lushplugins.itempools.ItemPools;
 import org.lushplugins.itempools.goal.Goal;
 import org.lushplugins.itempools.goal.GoalProvider;
 import org.lushplugins.itempools.goal.GoalItem;
-import org.lushplugins.lushlib.manager.Manager;
+import org.lushplugins.lushlib.config.YamlUtils;
 import org.lushplugins.lushlib.utils.IntRange;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.Nullable;
-import org.lushplugins.lushlib.utils.YamlUtils;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class GoalProviderConfigManager extends Manager {
+public class GoalProviderConfigManager {
     private ConcurrentHashMap<String, GoalProvider> goalProviders;
 
-    @Override
-    public void onEnable() {
+    public void reload() {
         ItemPools.getInstance().saveDefaultResource("goal-provider.yml");
         FileConfiguration config = ItemPools.getInstance().getConfigResource("goal-provider.yml");
 
@@ -42,19 +40,6 @@ public class GoalProviderConfigManager extends Manager {
 
             this.goalProviders.put(providerSection.getName(), goalProvider);
         });
-    }
-
-    @Override
-    public void onDisable() {
-        if (goalProviders != null) {
-            this.goalProviders.clear();
-            this.goalProviders = null;
-        }
-    }
-
-    public void reload() {
-        disable();
-        enable();
     }
 
     @Nullable

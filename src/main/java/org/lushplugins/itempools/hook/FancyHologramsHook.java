@@ -4,29 +4,22 @@ import de.oliver.fancyholograms.api.FancyHologramsPlugin;
 import de.oliver.fancyholograms.api.HologramManager;
 import de.oliver.fancyholograms.api.data.TextHologramData;
 import org.lushplugins.itempools.ItemPools;
-import org.lushplugins.lushlib.hook.Hook;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FancyHologramsHook extends Hook {
+public class FancyHologramsHook {
     private BukkitTask heartbeat;
 
-    public FancyHologramsHook() {
-        super(HookId.FANCY_HOLOGRAMS.toString());
-    }
-
-    @Override
-    protected void onEnable() {
+    public void enable() {
         updateHolograms();
 
         heartbeat = Bukkit.getScheduler().runTaskTimerAsynchronously(ItemPools.getInstance(), this::updateHolograms, 20, 20);
     }
 
-    @Override
-    protected void onDisable() {
+    public void disable() {
         if (heartbeat != null) {
             heartbeat.cancel();
             heartbeat = null;

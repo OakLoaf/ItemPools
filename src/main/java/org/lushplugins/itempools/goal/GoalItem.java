@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.lushplugins.lushlib.registry.RegistryUtils;
+import org.lushplugins.lushlib.utils.registry.RegistryUtils;
 
 import java.util.ArrayList;
 import java.util.List;
