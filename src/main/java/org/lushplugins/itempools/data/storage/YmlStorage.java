@@ -7,7 +7,7 @@ import org.lushplugins.itempools.goal.GoalCollection;
 import org.lushplugins.itempools.goal.GoalItem;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.lushplugins.lushlib.utils.YamlUtils;
+import org.lushplugins.lushlib.config.YamlUtils;
 
 import java.io.File;
 import java.io.IOException;

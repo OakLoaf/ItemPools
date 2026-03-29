@@ -3,8 +3,6 @@ package org.lushplugins.itempools;
 import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Registry;
@@ -20,11 +18,8 @@ import org.lushplugins.itempools.listener.PluginMessageListener;
 import org.lushplugins.itempools.placeholder.Placeholders;
 import org.lushplugins.itempools.pool.ItemPool;
 import org.lushplugins.itempools.pool.ItemPoolManager;
-import org.lushplugins.lushlib.LushLib;
-import org.lushplugins.lushlib.hook.Hook;
-import org.lushplugins.lushlib.manager.Manager;
-import org.lushplugins.lushlib.plugin.SpigotPlugin;
-import org.lushplugins.lushlib.registry.RegistryUtils;
+import org.lushplugins.lushlib.utils.plugin.SpigotPlugin;
+import org.lushplugins.lushlib.utils.registry.RegistryUtils;
 import org.lushplugins.placeholderhandler.PlaceholderHandler;
 import revxrsal.commands.bukkit.BukkitLamp;
 import revxrsal.commands.exception.CommandErrorException;
@@ -35,33 +30,37 @@ import java.io.IOException;
 import java.util.function.Consumer;
 
 public final class ItemPools extends SpigotPlugin {
-    private static final Gson GSON;
     private static ItemPools plugin;
 
-    static {
-        GSON = new GsonBuilder()
-            .setPrettyPrinting()
-            .create();
-    }
+    private ConfigManager configManager;
+    private GoalProviderConfigManager goalProviderConfigManager;
+    private ItemPoolManager itemPoolManager;
+    private ItemPoolDataManager itemPoolDataManager;
+    private ItemPoolConfigManager itemPoolConfigManager;
 
     @Override
     public void onLoad() {
         plugin = this;
-        LushLib.getInstance().enable(this);
     }
 
     @Override
     public void onEnable() {
-        registerManager(
-            new ConfigManager(),
-            new GoalProviderConfigManager(),
-            new ItemPoolManager(),
-            new ItemPoolDataManager(),
-            new ItemPoolConfigManager()
-        );
+        this.configManager = new ConfigManager();
+        this.configManager.reload();
 
-        ifPluginPresent("FancyHolograms", () -> registerHook(new FancyHologramsHook()));
-        hooks.values().forEach(Hook::enable);
+        this.goalProviderConfigManager = new GoalProviderConfigManager();
+        this.goalProviderConfigManager.reload();
+
+        this.itemPoolManager = new ItemPoolManager();
+        this.itemPoolManager.reload();
+
+        this.itemPoolDataManager = new ItemPoolDataManager();
+        this.itemPoolDataManager.reload();
+
+        this.itemPoolConfigManager = new ItemPoolConfigManager();
+        this.itemPoolConfigManager.reload();
+
+        ifPluginPresent("FancyHolograms", () -> new FancyHologramsHook().enable());
 
         new PluginMessageListener().register();
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -104,14 +103,10 @@ public final class ItemPools extends SpigotPlugin {
             }
         }
 
-        unregisterManager(ItemPoolDataManager.class);
+        itemPoolDataManager.shutdown();
 
         this.getServer().getMessenger().unregisterIncomingPluginChannel(this);
         this.getServer().getMessenger().unregisterOutgoingPluginChannel(this);
-
-        unregisterAllHooks();
-        unregisterAllModules();
-        LushLib.getInstance().disable();
     }
 
     public void sendGoalIncrementPluginMessage(String poolId, String goalId, int increment) {
@@ -149,31 +144,23 @@ public final class ItemPools extends SpigotPlugin {
     }
 
     public ConfigManager getConfigManager() {
-        return getNullableManager(ConfigManager.class);
+        return configManager;
     }
 
     public GoalProviderConfigManager getGoalProviderConfigManager() {
-        return getNullableManager(GoalProviderConfigManager.class);
+        return goalProviderConfigManager;
     }
 
     public ItemPoolManager getItemPoolManager() {
-        return getNullableManager(ItemPoolManager.class);
+        return itemPoolManager;
     }
 
     public ItemPoolConfigManager getItemPoolConfigManager() {
-        return getNullableManager(ItemPoolConfigManager.class);
+        return itemPoolConfigManager;
     }
 
     public ItemPoolDataManager getItemPoolDataManager() {
-        return getNullableManager(ItemPoolDataManager.class);
-    }
-
-    private <T extends Manager> T getNullableManager(Class<T> clazz) {
-        return getManager(clazz).orElse(null);
-    }
-
-    public static Gson getGson() {
-        return GSON;
+        return itemPoolDataManager;
     }
 
     public static ItemPools getInstance() {

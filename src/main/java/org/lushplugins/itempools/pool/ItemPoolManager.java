@@ -3,7 +3,6 @@ package org.lushplugins.itempools.pool;
 import org.lushplugins.itempools.ItemPools;
 import org.lushplugins.itempools.event.ItemPoolGoalUpdateEvent;
 import org.lushplugins.itempools.goal.Goal;
-import org.lushplugins.lushlib.manager.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -15,15 +14,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Set;import java.util.concurrent.ConcurrentHashMap;
 
-public class ItemPoolManager extends Manager {
+public class ItemPoolManager {
     /**
      * Region name to ItemPool
      */
     private ConcurrentHashMap<String, ItemPool> itemPools;
     private BukkitTask poolHeartbeat;
 
-    @Override
-    public void onEnable() {
+    public void reload() {
         itemPools = new ConcurrentHashMap<>();
         poolHeartbeat = Bukkit.getScheduler().runTaskTimer(ItemPools.getInstance(), () -> {
             itemPools.values().forEach(itemPool -> {
@@ -74,19 +72,6 @@ public class ItemPoolManager extends Manager {
                 });
             });
         },1, 5);
-    }
-
-    @Override
-    public void onDisable() {
-        if (poolHeartbeat != null) {
-            poolHeartbeat.cancel();
-            poolHeartbeat = null;
-        }
-
-        if (itemPools != null) {
-            itemPools.clear();
-            itemPools = null;
-        }
     }
 
     @Nullable

@@ -9,22 +9,20 @@ import org.lushplugins.itempools.goal.GoalProvider;
 import org.lushplugins.itempools.pool.ItemPool;
 import org.lushplugins.itempools.pool.ItemPoolManager;
 import org.lushplugins.itempools.region.Region;
-import org.lushplugins.lushlib.manager.Manager;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.lushplugins.itempools.goal.GoalCollection;
+import org.lushplugins.lushlib.config.YamlUtils;
 import org.lushplugins.lushlib.utils.Pair;
-import org.lushplugins.lushlib.utils.YamlUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemPoolConfigManager extends Manager {
+public class ItemPoolConfigManager {
 
-    @Override
-    public void onEnable() {
+    public void reload() {
         ItemPools.getInstance().saveDefaultResource("item-pools.yml");
         FileConfiguration regionsConfig = ItemPools.getInstance().getConfigResource("item-pools.yml");
 
@@ -130,10 +128,5 @@ public class ItemPoolConfigManager extends Manager {
                 });
             });
         }
-    }
-
-    public void reload() {
-        disable();
-        enable();
     }
 }
