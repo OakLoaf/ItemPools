@@ -24,7 +24,7 @@ dependencies {
     compileOnly("com.mysql:mysql-connector-j:9.6.0")
 
     // Soft Dependencies
-    compileOnly("de.oliver:FancyHolograms:2.9.1")
+    compileOnly("de.oliver:FancyHolograms:2.10.0")
 
     // Libraries
     compileOnly("org.jetbrains:annotations:26.1.0")
