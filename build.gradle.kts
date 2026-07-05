@@ -14,7 +14,7 @@ repositories {
     maven("https://oss.sonatype.org/content/groups/public/")
     maven("https://repo.papermc.io/repository/maven-public/") // Paper
     maven("https://repo.lushplugins.org/snapshots/") // LushLib, PlaceholderHandler
-    maven("https://repo.fancyplugins.de/releases/") // FancyHolograms
+    maven("https://repo.fancyinnovations.com/releases/") // FancyHolograms
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
 }
 
