@@ -11,6 +11,7 @@ on:
 jobs:
   create_release:
     runs-on: ubuntu-latest
+    if: false # Remove this line to enable workflow
 
     steps:
       - name: Checkout repository
@@ -40,6 +41,7 @@ jobs:
 
       - name: Post GitHub Release
         uses: svenstaro/upload-release-action@v2
+        continue-on-error: true
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/libs/*.jar
