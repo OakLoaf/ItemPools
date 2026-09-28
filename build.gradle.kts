@@ -28,11 +28,11 @@ dependencies {
 
     // Libraries
     compileOnly("org.jetbrains:annotations:26.1.0")
-    implementation("org.lushplugins:LushLib:1.0.0")
+    implementation("org.lushplugins:LushLib:1.0.1")
     implementation("com.zaxxer:HikariCP:7.1.0")
     implementation("io.github.revxrsal:lamp.common:4.0.0-rc.18")
     implementation("io.github.revxrsal:lamp.bukkit:4.0.0-rc.18")
-    implementation("org.lushplugins:PlaceholderHandler:1.0.0-alpha10")
+    implementation("org.lushplugins:PlaceholderHandler:1.0.1-alpha10")
 }
 
 java {
